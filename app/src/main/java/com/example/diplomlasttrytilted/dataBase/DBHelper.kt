@@ -171,4 +171,25 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
         return productList
     }
+
+    public fun getUserFromDatabase(): Clients {
+        val db = this.readableDatabase
+        val cursor = db.query(
+            "users",
+            arrayOf("firstName", "name", "lastName", "phone", "login", "pass"),
+            null,
+            null,
+            null,
+            null,
+            null
+        )
+        cursor.moveToFirst()
+        val firstName = cursor.getString(0)
+        val name = cursor.getString(1)
+        val lastName = cursor.getString(2)
+        val phone = cursor.getString(4)
+        val login = cursor.getString(5)
+        val pass = cursor.getString(6)
+        return Clients(firstName, name, lastName, phone, login, pass)
+    }
 }

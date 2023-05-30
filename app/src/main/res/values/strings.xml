@@ -27,4 +27,9 @@
 
         <!-- Формат отображения цены товара -->
         <string name="product_price">%d USD</string>
+    <string name="profile_name">Имя:</string>
+    <string name="profile_email">Email:</string>
+    <string name="profile_phone">Телефон:</string>
+    <string name="edit_profile_button">Редактировать профиль</string>
+    <string name="save_profile_button">Сохранить изменения</string>
 </resources>

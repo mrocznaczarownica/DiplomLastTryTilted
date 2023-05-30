@@ -6,4 +6,44 @@
     android:layout_height="match_parent"
     tools:context=".userActivities.MyProfileActivity">
 
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/main">
+
+        <!-- Поле имени пользователя -->
+        <TextView
+            android:layout_margin="15dp"
+            android:id="@+id/profile_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_name"/>
+
+        <!-- Поле адреса электронной почты -->
+        <TextView
+            android:layout_margin="15dp"
+            android:id="@+id/profile_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_email"/>
+
+        <!-- Поле номера телефона -->
+        <TextView
+            android:layout_margin="15dp"
+            android:id="@+id/profile_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_phone"/>
+
+        <!-- Кнопка для редактирования профиля -->
+        <Button
+            android:layout_marginVertical="15dp"
+            android:id="@+id/edit_profile_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/edit_profile_button"/>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
