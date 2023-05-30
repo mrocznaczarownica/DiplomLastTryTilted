@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MenuActivity"
+    android:background="@color/main">
+
+    <ImageButton
+        android:id="@+id/cartImageButton"
+        android:layout_width="108dp"
+        android:layout_height="110dp"
+        android:layout_marginStart="252dp"
+        android:layout_marginTop="330dp"
+        android:layout_marginEnd="51dp"
+        android:background="#25274D"
+        android:src="@drawable/cart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:onClick="cartButtonClick"/>
+
+    <ImageButton
+        android:id="@+id/checkOrdersImageButton"
+        android:layout_width="108dp"
+        android:layout_height="110dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="330dp"
+        android:background="#25274D"
+        android:src="@drawable/checkorder"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:onClick="checkOrdersButtonClick"/>
+
+    <ImageButton
+        android:id="@+id/createOrderImageButton"
+        android:layout_width="108dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="122dp"
+        android:layout_marginEnd="51dp"
+        android:background="#25274D"
+        android:src="@drawable/createorder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:onClick="createOrderButtonClick"/>
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="83dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="19dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="43dp"
+        android:layout_height="43dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="14dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/baseline_person_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"
+        android:background="#25274D"
+        android:onClick="myProfileButtonClick"/>
+
+    <ImageButton
+        android:id="@+id/catalogImageButton"
+        android:layout_width="108dp"
+        android:layout_height="110dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="122dp"
+        android:background="#25274D"
+        android:scaleType="centerCrop"
+        android:src="@drawable/catalog"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:onClick="catalogButtonClick"/>
+
+    <ImageButton
+        android:id="@+id/consultationImageButton"
+        android:layout_width="108dp"
+        android:layout_height="110dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="98dp"
+        android:background="#25274D"
+        android:scaleType="centerInside"
+        android:src="@drawable/consultation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkOrdersImageButton"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:onClick="consultationButtonClick"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
