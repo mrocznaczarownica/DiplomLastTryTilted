@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import com.example.diplom.database.Clients
 import com.example.diplom.database.Tarif
 import com.example.diplom.database.User
+import com.example.diplomlasttrytilted.auxiliaryClasses.DatabaseContract.TariffEntry.Companion.COLUMN_NAME
 
 
 class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -33,7 +34,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         private const val TABLE_TARIF = "Tarif"
         private const val COLUMN_ID_TARIF = "id"
         private const val COLUMN_NAME_TARIF = "name"
-        private const val COLUMN_DESCTIPTION = "description"
+        private const val COLUMN_DESCTIPTION = "desctiption"
         private const val COLUMN_PRICE = "price"
         private const val COLUMN_IMAGE = "image"
     }
@@ -47,6 +48,13 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 "$COLUMN_LOGIN TEXT UNIQUE, " +
                 "$COLUMN_PASSWORD TEXT)"
         db?.execSQL(createTable)
+
+        val tarifTable = "CREATE TABLE $TABLE_TARIF ($COLUMN_ID_TARIF INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "$COLUMN_NAME_TARIF TEXT, " +
+                "$COLUMN_DESCTIPTION TEXT, " +
+                "$COLUMN_PRICE INT, " +
+                "$COLUMN_IMAGE TEXT)"
+        db?.execSQL(tarifTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -159,7 +167,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
         if (cursor.moveToFirst()) {
             do {
-                var product:Tarif = Tarif(cursor.getString(0),
+                var product:Tarif = Tarif(cursor.getInt(0),
                 cursor.getString(1), cursor.getString(2),
                 cursor.getInt(3), cursor.getString(4))
                 productList.add(product)
