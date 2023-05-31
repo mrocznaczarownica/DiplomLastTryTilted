@@ -23,10 +23,10 @@ class LoginActivity : AppCompatActivity() {
     fun LoginButtonClick(view: View) {
         var login: EditText = findViewById(R.id.logineditText)
         var pass: EditText = findViewById(R.id.passEditText)
-        log = login.toString()
+        log = login.text.toString()
 
-        if (login.toString().isNotEmpty() && pass.toString().isNotEmpty()) {
-            val user = sqlHelper.getUserByLoginAndPassword(login.toString(), pass.toString())
+        if (login.text.toString().isNotEmpty() && pass.text.toString().isNotEmpty()) {
+            val user = sqlHelper.getUserByLoginAndPassword(login.text.toString(), pass.text.toString())
 
             if (user != null) {
                 // Если пользователь существует, сохраняем его данные в SharedPreferences
@@ -37,6 +37,9 @@ class LoginActivity : AppCompatActivity() {
                     .putString("pass", user.password)
                     .putInt("rol", 0)
                     .apply()
+                val intent = Intent(this, MenuActivity::class.java)
+                intent.putExtra("login", login.text.toString())
+                startActivity(intent)
             }else{
                 Toast.makeText(this,"Неверный логин и/или пароль",Toast.LENGTH_SHORT)
                 login.text.clear()

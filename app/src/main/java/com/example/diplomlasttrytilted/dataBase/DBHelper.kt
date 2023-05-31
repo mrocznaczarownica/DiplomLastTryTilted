@@ -11,7 +11,6 @@ import com.example.diplom.database.User
 
 class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
-    lateinit var product:Tarif
     companion object {
         private const val DATABASE_NAME = "users.db"
         private const val DATABASE_VERSION = 1
@@ -31,7 +30,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         private const val COLUMN_PASSWORD_USERS = "password"
         private const val COLUMN_ROL = "rol"
 
-        private const val TABLE_TARIF = "tarif"
+        private const val TABLE_TARIF = "Tarif"
         private const val COLUMN_ID_TARIF = "id"
         private const val COLUMN_NAME_TARIF = "name"
         private const val COLUMN_DESCTIPTION = "description"
@@ -77,7 +76,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         val db = this.readableDatabase
 
         val cursor = db.query(TABLE_CLIENTS,
-            arrayOf(COLUMN_ID, COLUMN_FIRST_NAME, COLUMN_LAST_NAME, COLUMN_MIDDLE_NAME, COLUMN_PHONE,
+            arrayOf(COLUMN_FIRST_NAME, COLUMN_LAST_NAME, COLUMN_MIDDLE_NAME, COLUMN_PHONE,
                 COLUMN_LOGIN, COLUMN_PASSWORD),
             "$COLUMN_LOGIN = ?",
             arrayOf(login),
@@ -85,12 +84,12 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
         val user: Clients?
         if (cursor.moveToFirst()) {
-            val firstName = cursor.getString(1)
-            val lastName = cursor.getString(2)
-            val middleName = cursor.getString(3)
-            val phoneNumber = cursor.getString(4)
-            val login = cursor.getString(5)
-            val password = cursor.getString(6)
+            val firstName = cursor.getString(0)
+            val lastName = cursor.getString(1)
+            val middleName = cursor.getString(2)
+            val phoneNumber = cursor.getString(3)
+            val login = cursor.getString(4)
+            val password = cursor.getString(5)
             user = Clients( firstName, lastName, middleName,
                 phoneNumber,login, password)
         } else {
@@ -102,23 +101,25 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return user
     }
 
-    fun getUserByLoginAndPassword(login: String, password: String): User? {
+    fun getUserByLoginAndPassword(login: String, password: String): Clients? {
         val db = this.readableDatabase
 
-        val cursor = db.query(TABLE_USERS,
-            arrayOf(COLUMN_ID_ROLE, COLUMN_LOGIN_USERS, COLUMN_PASSWORD_USERS, COLUMN_ROL),
+        val cursor = db.query(
+            TABLE_CLIENTS,
+            arrayOf(COLUMN_FIRST_NAME, COLUMN_LAST_NAME, COLUMN_MIDDLE_NAME, COLUMN_PHONE),
             "$COLUMN_LOGIN = ? AND $COLUMN_PASSWORD = ?",
             arrayOf(login, password),
             null, null, null, null)
 
-        val user: User?
+        val user: Clients?
         if (cursor.moveToFirst()) {
-            val idRole = cursor.getInt(0)
-            val login = cursor.getString(1)
-            val password = cursor.getString(2)
-            val rol = cursor.getInt(3)
-            user = User(idRole, login, password, rol)
+            val firstName = cursor.getString(0)
+            val lastName = cursor.getString(1)
+            val middleName = cursor.getString(2)
+            val phoneNumber = cursor.getString(3)
+            user = Clients(firstName, lastName, middleName, phoneNumber, login, password)
             user.login = login
+            user.password = password
         } else {
             user = null
         }
@@ -153,16 +154,14 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
         val selectQuery = "SELECT * FROM $TABLE_TARIF"
 
-        val db = this.writableDatabase
+        val db = this.readableDatabase
         val cursor = db.rawQuery(selectQuery, null)
 
         if (cursor.moveToFirst()) {
             do {
-                product.id = cursor.getString(0)
-                product.name = cursor.getString(1)
-                product.desctiption = cursor.getString(2)
-                product.price = cursor.getInt(3)
-                product.image = cursor.getString(4)
+                var product:Tarif = Tarif(cursor.getString(0),
+                cursor.getString(1), cursor.getString(2),
+                cursor.getInt(3), cursor.getString(4))
                 productList.add(product)
             } while (cursor.moveToNext())
         }

@@ -54,13 +54,15 @@ class SignIn : AppCompatActivity() {
                 // Проверяем, что логин не занят
                 if (sqlHelper.getUserByLogin(login) == null) {
                     // Создаем нового пользователя
-                    val newUser = Clients( lastName, login, password)
+                    val newUser = Clients(firstName, lastName, middleName, phone, login, password)
 
                     // Добавляем пользователя в базу данных
                     sqlHelper.addClient(newUser)
 
                     // Переходим на окно входа
-                    startActivity(Intent(this, LoginActivity::class.java))
+                    val intent = Intent(this, MenuActivity::class.java)
+                    intent.putExtra("login1", login)
+                    startActivity(intent)
                     finish()
                 } else {
                     errorTextView.text = "Пользователь с таким логином уже существует"
