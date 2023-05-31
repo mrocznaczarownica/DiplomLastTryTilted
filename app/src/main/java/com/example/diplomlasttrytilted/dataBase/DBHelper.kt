@@ -31,7 +31,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         private const val COLUMN_PASSWORD_USERS = "password"
         private const val COLUMN_ROL = "rol"
 
-        private const val TABLE_TARIF = "Tarifs"
+        private const val TABLE_TARIFS = "tarifs"
         private const val COLUMN_ID_TARIF = "id"
         private const val COLUMN_NAME_TARIF = "name"
         private const val COLUMN_DESCTIPTION = "desctiption"
@@ -46,7 +46,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 "$COLUMN_LOGIN TEXT UNIQUE, " +
                 "$COLUMN_PASSWORD TEXT)"
 
-        val tarifTable = "CREATE TABLE $TABLE_TARIF ($COLUMN_ID_TARIF INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        val tarifTable = "CREATE TABLE $TABLE_TARIFS ($COLUMN_ID_TARIF INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "$COLUMN_NAME_TARIF TEXT, " +
                 "$COLUMN_DESCTIPTION TEXT, " +
                 "$COLUMN_PRICE INT, " +
@@ -59,7 +59,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-            db.execSQL("DROP TABLE IF EXISTS '$TABLE_TARIF'")
+            db.execSQL("DROP TABLE IF EXISTS '$TABLE_TARIFS'")
             db.execSQL("DROP TABLE IF EXISTS '$TABLE_CLIENTS'")
             onCreate(db)
     }
@@ -159,7 +159,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     fun getAllProducts(): List<Tarif> {
         val productList = ArrayList<Tarif>()
 
-        val selectQuery = "SELECT * FROM $TABLE_TARIF"
+        val selectQuery = "SELECT * FROM Tarif"
 
         val db = this.readableDatabase
         val cursor = db.rawQuery(selectQuery, null)
