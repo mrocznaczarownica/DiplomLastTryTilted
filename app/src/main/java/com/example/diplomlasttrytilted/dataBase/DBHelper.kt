@@ -31,15 +31,13 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         private const val COLUMN_PASSWORD_USERS = "password"
         private const val COLUMN_ROL = "rol"
 
-        private const val TABLE_TARIF = "Tarif"
+        private const val TABLE_TARIF = "Tarifs"
         private const val COLUMN_ID_TARIF = "id"
         private const val COLUMN_NAME_TARIF = "name"
         private const val COLUMN_DESCTIPTION = "desctiption"
         private const val COLUMN_PRICE = "price"
         private const val COLUMN_IMAGE = "image"
-    }
 
-    override fun onCreate(db: SQLiteDatabase?) {
         val createTable = "CREATE TABLE $TABLE_CLIENTS ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "$COLUMN_FIRST_NAME TEXT, " +
                 "$COLUMN_LAST_NAME TEXT, " +
@@ -47,22 +45,23 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 "$COLUMN_PHONE TEXT, " +
                 "$COLUMN_LOGIN TEXT UNIQUE, " +
                 "$COLUMN_PASSWORD TEXT)"
-        db?.execSQL(createTable)
 
         val tarifTable = "CREATE TABLE $TABLE_TARIF ($COLUMN_ID_TARIF INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "$COLUMN_NAME_TARIF TEXT, " +
                 "$COLUMN_DESCTIPTION TEXT, " +
                 "$COLUMN_PRICE INT, " +
                 "$COLUMN_IMAGE TEXT)"
-        db?.execSQL(tarifTable)
     }
 
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        if (oldVersion < 2) {
-            // Например, если нам нужно добавить новое поле к таблице
-            // val addColumn = "ALTER TABLE $TABLE_USERS ADD COLUMN $COLUMN_NEW_FIELD TEXT"
-            // db?.execSQL(addColumn)
-        }
+    override fun onCreate(db: SQLiteDatabase) {
+        db.execSQL(createTable)
+        db.execSQL(tarifTable)
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+            db.execSQL("DROP TABLE IF EXISTS '$TABLE_TARIF'")
+            db.execSQL("DROP TABLE IF EXISTS '$TABLE_CLIENTS'")
+            onCreate(db)
     }
 
     fun addClient(user: Clients) {
@@ -167,7 +166,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
         if (cursor.moveToFirst()) {
             do {
-                var product:Tarif = Tarif(cursor.getInt(0),
+                var product = Tarif(cursor.getInt(0),
                 cursor.getString(1), cursor.getString(2),
                 cursor.getInt(3), cursor.getString(4))
                 productList.add(product)
