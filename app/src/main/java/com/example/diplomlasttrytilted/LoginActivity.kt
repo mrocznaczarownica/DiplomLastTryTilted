@@ -41,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
                 intent.putExtra("login", login.text.toString())
                 startActivity(intent)
             }else{
+                //не работает
                 Toast.makeText(this,"Неверный логин и/или пароль",Toast.LENGTH_SHORT)
                 login.text.clear()
                 pass.text.clear()

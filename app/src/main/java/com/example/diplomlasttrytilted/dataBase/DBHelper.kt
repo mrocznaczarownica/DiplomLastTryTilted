@@ -38,7 +38,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         private const val COLUMN_PRICE = "price"
         private const val COLUMN_IMAGE = "image"
 
-        val createTable = "CREATE TABLE $TABLE_CLIENTS ($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        val createTable = "CREATE TABLE $TABLE_CLIENTS " +
+                "($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "$COLUMN_FIRST_NAME TEXT, " +
                 "$COLUMN_LAST_NAME TEXT, " +
                 "$COLUMN_MIDDLE_NAME TEXT, " +
@@ -46,16 +47,18 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 "$COLUMN_LOGIN TEXT UNIQUE, " +
                 "$COLUMN_PASSWORD TEXT)"
 
-        val tarifTable = "CREATE TABLE $TABLE_TARIFS ($COLUMN_ID_TARIF INTEGER PRIMARY KEY AUTOINCREMENT, " +
+        val tarifTable = "CREATE TABLE $TABLE_TARIFS " +
+                "($COLUMN_ID_TARIF INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "$COLUMN_NAME_TARIF TEXT, " +
                 "$COLUMN_DESCTIPTION TEXT, " +
                 "$COLUMN_PRICE INT, " +
                 "$COLUMN_IMAGE TEXT)"
+
     }
 
-    override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL(createTable)
-        db.execSQL(tarifTable)
+    override fun onCreate(db: SQLiteDatabase?) {
+        db?.execSQL(createTable)
+        db?.execSQL(tarifTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -136,30 +139,10 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return user
     }
 
-    /*fun getAllProducts(): List<Tarif>? {
-        val productList: MutableList<Tarif> = ArrayList<Tarif>()
-        val selectQuery = "SELECT * FROM $TABLE_TARIF"
-        val db = this.writableDatabase
-        val cursor = db.rawQuery(selectQuery, null)
-        if (cursor.moveToFirst()) {
-            do {
-                val product = Tarif()
-                product.id = cursor.getString(0)
-                product.name = cursor.getString(1)
-                product.desctiption = cursor.getString(2)
-                product.price = cursor.getInt(3)
-                product.image = cursor.getString(4)
-                productList.add(product)
-            } while (cursor.moveToNext())
-        }
-        db.close()
-        return productList
-    }*/
-
     fun getAllProducts(): List<Tarif> {
         val productList = ArrayList<Tarif>()
 
-        val selectQuery = "SELECT * FROM Tarif"
+        val selectQuery = "SELECT * FROM $TABLE_TARIFS"
 
         val db = this.readableDatabase
         val cursor = db.rawQuery(selectQuery, null)
