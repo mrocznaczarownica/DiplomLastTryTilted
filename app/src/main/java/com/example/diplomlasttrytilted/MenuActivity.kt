@@ -22,11 +22,9 @@ class MenuActivity : AppCompatActivity() {
         nameUser = findViewById(R.id.nameTextView)
         var log:String = intent.getStringExtra("login").toString()
         var log1:String = intent.getStringExtra("login1").toString()
-        if (log.isNotEmpty()){
+        if (log != null){
             nameUser.text = log
-        } else if (log1.isNotEmpty()){
-            nameUser.text = log1
-        }else{
+        } else{
             nameUser.setText("")
         }
     }

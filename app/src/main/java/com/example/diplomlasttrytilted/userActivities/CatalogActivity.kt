@@ -3,12 +3,9 @@ package com.example.diplomlasttrytilted.userActivities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.diplom.database.Tarif
 import com.example.diplomlasttrytilted.R
 import com.example.diplomlasttrytilted.auxiliaryClasses.ProductAdapter
 import com.example.diplomlasttrytilted.dataBase.DBHelper

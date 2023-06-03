@@ -61,7 +61,7 @@ class SignIn : AppCompatActivity() {
 
                     // Переходим на окно входа
                     val intent = Intent(this, MenuActivity::class.java)
-                    intent.putExtra("login1", login)
+                    intent.putExtra("login", loginEditText.text.toString())
                     startActivity(intent)
                     finish()
                 } else {

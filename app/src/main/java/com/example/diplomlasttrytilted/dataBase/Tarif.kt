@@ -1,9 +1,8 @@
-package com.example.diplom.database
+package com.example.diplomlasttrytilted.dataBase
 
 data class Tarif(
-    var id: Int,
-    var name:String,
+    var name: String,
     var desctiption: String,
     var price: Int,
-    var image:String
+    var image: String
 )

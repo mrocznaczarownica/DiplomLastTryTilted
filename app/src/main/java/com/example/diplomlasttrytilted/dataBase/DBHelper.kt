@@ -2,12 +2,10 @@ package com.example.diplomlasttrytilted.dataBase
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.diplom.database.Clients
-import com.example.diplom.database.Tarif
-import com.example.diplom.database.User
-import com.example.diplomlasttrytilted.auxiliaryClasses.DatabaseContract.TariffEntry.Companion.COLUMN_NAME
 
 
 class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -31,13 +29,15 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         private const val COLUMN_PASSWORD_USERS = "password"
         private const val COLUMN_ROL = "rol"
 
-        private const val TABLE_TARIFS = "tarifs"
+        private const val TABLE_TARIFS = "Tarif"
         private const val COLUMN_ID_TARIF = "id"
         private const val COLUMN_NAME_TARIF = "name"
         private const val COLUMN_DESCTIPTION = "desctiption"
         private const val COLUMN_PRICE = "price"
         private const val COLUMN_IMAGE = "image"
+    }
 
+    override fun onCreate(db: SQLiteDatabase?) {
         val createTable = "CREATE TABLE $TABLE_CLIENTS " +
                 "($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "$COLUMN_FIRST_NAME TEXT, " +
@@ -48,17 +48,14 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 "$COLUMN_PASSWORD TEXT)"
 
         val tarifTable = "CREATE TABLE $TABLE_TARIFS " +
-                "($COLUMN_ID_TARIF INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "$COLUMN_NAME_TARIF TEXT, " +
+                "($COLUMN_NAME_TARIF TEXT, " +
                 "$COLUMN_DESCTIPTION TEXT, " +
                 "$COLUMN_PRICE INT, " +
                 "$COLUMN_IMAGE TEXT)"
 
-    }
 
-    override fun onCreate(db: SQLiteDatabase?) {
-        db?.execSQL(createTable)
         db?.execSQL(tarifTable)
+        db?.execSQL(createTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -140,38 +137,54 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
     fun getAllProducts(): List<Tarif> {
-        val productList = ArrayList<Tarif>()
+/*        val db1 = this.writableDatabase
+        val tarifTable = "CREATE TABLE $TABLE_TARIFS " +
+                "($COLUMN_NAME_TARIF TEXT, " +
+                "$COLUMN_DESCTIPTION TEXT, " +
+                "$COLUMN_PRICE INT, " +
+                "$COLUMN_IMAGE TEXT)"
+        db1?.execSQL(tarifTable)*/
 
-        val selectQuery = "SELECT * FROM $TABLE_TARIFS"
+        val stdList: ArrayList<Tarif> = ArrayList()
 
+        val query = "SELECT * FROM $TABLE_TARIFS"
         val db = this.readableDatabase
-        val cursor = db.rawQuery(selectQuery, null)
 
-        if (cursor.moveToFirst()) {
-            do {
-                var product = Tarif(cursor.getInt(0),
-                cursor.getString(1), cursor.getString(2),
-                cursor.getInt(3), cursor.getString(4))
-                productList.add(product)
-            } while (cursor.moveToNext())
+        val cursor: Cursor?
+
+        try {
+            cursor = db.rawQuery(query,null)
         }
-
-        db.close()
-
-        return productList
+        catch (e:Exception)
+        {
+            db.execSQL(query)
+            return ArrayList()
+        }
+        var name:String
+        var desctiption: String
+        var price: Int
+        var image: String
+        if(cursor.moveToFirst())
+        {
+            do {
+                name = cursor.getString(1)
+                desctiption = cursor.getString(2)
+                price = cursor.getInt(3)
+                image = cursor.getString(4)
+                val std = Tarif(name = name, desctiption = desctiption, price = price, image = image)
+                stdList.add(std)
+            }while (cursor.moveToNext())
+        }
+        return stdList
     }
 
     public fun getUserFromDatabase(): Clients {
+
         val db = this.readableDatabase
-        val cursor = db.query(
-            "users",
-            arrayOf("firstName", "name", "lastName", "phone", "login", "pass"),
-            null,
-            null,
-            null,
-            null,
-            null
-        )
+        val query = "SELECT * FROM $TABLE_CLIENTS"
+
+        val cursor = db.rawQuery(query,null)
+
         cursor.moveToFirst()
         val firstName = cursor.getString(0)
         val name = cursor.getString(1)

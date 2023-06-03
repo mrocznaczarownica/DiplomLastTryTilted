@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.diplom.database.Tarif
+import com.example.diplomlasttrytilted.dataBase.Tarif
 import com.example.diplomlasttrytilted.R
 
 class ProductAdapter : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
