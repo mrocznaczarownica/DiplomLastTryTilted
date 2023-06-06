@@ -51,9 +51,9 @@
     <TextView
         android:id="@+id/nameTextView"
         android:layout_width="83dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="19dp"
+        android:layout_height="33dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="5dp"
         app:layout_constraintEnd_toStartOf="@+id/imageButton"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -61,15 +61,15 @@
         android:id="@+id/imageButton"
         android:layout_width="43dp"
         android:layout_height="43dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="14dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="#25274D"
+        android:onClick="myProfileButtonClick"
         android:scaleType="fitCenter"
         android:src="@drawable/baseline_person_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"
-        android:background="#25274D"
-        android:onClick="myProfileButtonClick"/>
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <ImageButton
         android:id="@+id/catalogImageButton"

@@ -34,6 +34,7 @@
         tools:ignore="TouchTargetSizeCheck" />
 
     <EditText
+        android:inputType="textPassword"
         android:id="@+id/passEditText"
         android:layout_width="275dp"
         android:layout_height="45dp"
@@ -45,7 +46,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logineditText"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:onClick="passViewClick"/>
 
     <Button
         android:id="@+id/button"

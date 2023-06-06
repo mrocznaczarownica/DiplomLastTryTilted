@@ -4,14 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".userActivities.MyProfileActivity">
+    tools:context=".userActivities.MyProfileActivity"
+    android:background="@color/main">
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/main">
+        android:background="@color/main"
+        android:layout_margin="25dp">
+
+        <TextView
+            android:layout_margin="15dp"
+            android:id="@+id/profile_firstname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Фамилия"/>
 
         <!-- Поле имени пользователя -->
         <TextView
@@ -21,21 +30,35 @@
             android:layout_height="wrap_content"
             android:text="@string/profile_name"/>
 
-        <!-- Поле адреса электронной почты -->
         <TextView
             android:layout_margin="15dp"
-            android:id="@+id/profile_email"
+            android:id="@+id/profile_lastname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/profile_email"/>
+            android:text="Отчество"/>
 
-        <!-- Поле номера телефона -->
+        <!-- Поле адреса электронной почты -->
         <TextView
             android:layout_margin="15dp"
             android:id="@+id/profile_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/profile_phone"/>
+            android:text="Номер телефона"/>
+
+        <!-- Поле номера телефона -->
+        <TextView
+            android:layout_margin="15dp"
+            android:id="@+id/profile_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Логин"/>
+
+        <TextView
+            android:layout_margin="15dp"
+            android:id="@+id/profile_pass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Пароль"/>
 
         <!-- Кнопка для редактирования профиля -->
         <Button

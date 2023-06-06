@@ -1,4 +1,4 @@
-package com.example.diplom.database
+package com.example.diplomlasttrytilted.dataBase
 
 data class Clients(
     var firstName:String = "",

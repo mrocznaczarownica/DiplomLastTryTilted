@@ -1,6 +1,5 @@
 package com.example.diplomlasttrytilted
 
-import android.content.ContentValues
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,7 +8,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import com.example.diplom.database.Clients
+import com.example.diplomlasttrytilted.dataBase.Clients
 import com.example.diplomlasttrytilted.dataBase.DBHelper
 
 class SignIn : AppCompatActivity() {
@@ -41,9 +40,10 @@ class SignIn : AppCompatActivity() {
         errorTextView = findViewById(R.id.errorTextView)
 
         registerButton.setOnClickListener {
+
             val firstName = firstNameEditText.text.toString()
-            val lastName = lastNameEditText.text.toString()
-            val middleName = nameEditText.text.toString()
+            val middleName = lastNameEditText.text.toString()
+            val lastName = nameEditText.text.toString()
             val phone = phoneEditText.text.toString()
             val login = loginEditText.text.toString()
             val password = passwordEditText.text.toString()
@@ -51,8 +51,10 @@ class SignIn : AppCompatActivity() {
             // Проверяем, что поля не пустые
             if (firstName.isNotEmpty() && lastName.isNotEmpty() && login.isNotEmpty()
                 && password.isNotEmpty() && middleName.isNotEmpty() && phone.isNotEmpty()) {
+
                 // Проверяем, что логин не занят
                 if (sqlHelper.getUserByLogin(login) == null) {
+
                     // Создаем нового пользователя
                     val newUser = Clients(firstName, lastName, middleName, phone, login, password)
 
@@ -71,5 +73,11 @@ class SignIn : AppCompatActivity() {
                 errorTextView.text = "Заполните все поля"
             }
         }
+    }
+
+    fun passViewClick(view: View) {
+        var pass: EditText = findViewById(R.id.passEditText)
+
+        Toast.makeText(this,pass.text.toString(), Toast.LENGTH_SHORT).show()
     }
 }

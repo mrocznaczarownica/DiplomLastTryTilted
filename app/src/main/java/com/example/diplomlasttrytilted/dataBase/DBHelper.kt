@@ -5,7 +5,6 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.diplom.database.Clients
 
 
 class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -14,7 +13,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         private const val DATABASE_NAME = "users.db"
         private const val DATABASE_VERSION = 1
 
-        private const val TABLE_CLIENTS = "users"
+        private const val TABLE_CLIENTS = "Clients"
         private const val COLUMN_ID = "id"
         private const val COLUMN_FIRST_NAME = "first_name"
         private const val COLUMN_LAST_NAME = "last_name"
@@ -109,6 +108,19 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
     fun getUserByLoginAndPassword(login: String, password: String): Clients? {
+
+        /*val db1 = this.writableDatabase
+
+        val createTable = "CREATE TABLE $TABLE_CLIENTS " +
+                "($COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "$COLUMN_FIRST_NAME TEXT, " +
+                "$COLUMN_LAST_NAME TEXT, " +
+                "$COLUMN_MIDDLE_NAME TEXT, " +
+                "$COLUMN_PHONE TEXT, " +
+                "$COLUMN_LOGIN TEXT UNIQUE, " +
+                "$COLUMN_PASSWORD TEXT)"
+        db1?.execSQL(createTable)*/
+
         val db = this.readableDatabase
 
         val cursor = db.query(
@@ -145,6 +157,11 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 "$COLUMN_IMAGE TEXT)"
         db1?.execSQL(tarifTable)*/
 
+        /*val db1 = this.writableDatabase
+        val tarifTable = "INSERT INTO $TABLE_TARIFS VALUES" +
+                "('Гроб лакированный', 'Описания нет', 12000, 'image')"
+        db1?.execSQL(tarifTable)*/
+
         val stdList: ArrayList<Tarif> = ArrayList()
 
         val query = "SELECT * FROM $TABLE_TARIFS"
@@ -167,10 +184,57 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         if(cursor.moveToFirst())
         {
             do {
-                name = cursor.getString(1)
-                desctiption = cursor.getString(2)
-                price = cursor.getInt(3)
-                image = cursor.getString(4)
+                name = cursor.getString(0)
+                desctiption = cursor.getString(1)
+                price = cursor.getInt(2)
+                image = cursor.getString(3)
+                val std = Tarif(name = name, desctiption = desctiption, price = price, image = image)
+                stdList.add(std)
+            }while (cursor.moveToNext())
+        }
+        return stdList
+    }
+
+    fun getProductsForName(name:String): List<Tarif> {
+/*        val db1 = this.writableDatabase
+        val tarifTable = "CREATE TABLE $TABLE_TARIFS " +
+                "($COLUMN_NAME_TARIF TEXT, " +
+                "$COLUMN_DESCTIPTION TEXT, " +
+                "$COLUMN_PRICE INT, " +
+                "$COLUMN_IMAGE TEXT)"
+        db1?.execSQL(tarifTable)*/
+
+        /*val db1 = this.writableDatabase
+        val tarifTable = "INSERT INTO $TABLE_TARIFS VALUES" +
+                "('Гроб лакированный', 'Описания нет', 12000, 'image')"
+        db1?.execSQL(tarifTable)*/
+
+        val stdList: ArrayList<Tarif> = ArrayList()
+
+        val query = "SELECT * FROM $TABLE_TARIFS where name = $name"
+        val db = this.readableDatabase
+
+        val cursor: Cursor?
+
+        try {
+            cursor = db.rawQuery(query,null)
+        }
+        catch (e:Exception)
+        {
+            db.execSQL(query)
+            return ArrayList()
+        }
+        var name:String
+        var desctiption: String
+        var price: Int
+        var image: String
+        if(cursor.moveToFirst())
+        {
+            do {
+                name = cursor.getString(0)
+                desctiption = cursor.getString(1)
+                price = cursor.getInt(2)
+                image = cursor.getString(3)
                 val std = Tarif(name = name, desctiption = desctiption, price = price, image = image)
                 stdList.add(std)
             }while (cursor.moveToNext())
@@ -186,9 +250,9 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         val cursor = db.rawQuery(query,null)
 
         cursor.moveToFirst()
-        val firstName = cursor.getString(0)
-        val name = cursor.getString(1)
-        val lastName = cursor.getString(2)
+        val firstName = cursor.getString(1)
+        val name = cursor.getString(2)
+        val lastName = cursor.getString(3)
         val phone = cursor.getString(4)
         val login = cursor.getString(5)
         val pass = cursor.getString(6)

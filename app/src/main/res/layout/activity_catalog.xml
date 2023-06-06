@@ -8,10 +8,13 @@
     android:background="@color/main">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_margin="15dp"
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_margin="15dp"
+        tools:layout_editor_absoluteX="13dp"
+        tools:layout_editor_absoluteY="-290dp"
+        android:layout_marginBottom="70dp"/>
 
     <TextView
         android:id="@+id/emptyView"
@@ -25,6 +28,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="15dp"
+        android:layout_marginEnd="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="Добавить в корзину"
+        android:onClick="addToCard"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

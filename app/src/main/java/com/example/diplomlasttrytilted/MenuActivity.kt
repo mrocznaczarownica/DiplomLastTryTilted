@@ -21,7 +21,6 @@ class MenuActivity : AppCompatActivity() {
 
         nameUser = findViewById(R.id.nameTextView)
         var log:String = intent.getStringExtra("login").toString()
-        var log1:String = intent.getStringExtra("login1").toString()
         if (log != null){
             nameUser.text = log
         } else{
