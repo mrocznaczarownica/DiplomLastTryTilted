@@ -63,21 +63,20 @@ class CatalogActivity : AppCompatActivity() {
     }
 
     fun addToCard(view: View) {
-        val ad: ProductAdapter = recyclerView.adapter as ProductAdapter
         var count = recyclerView.childCount
         var list = mutableListOf<String>()
+
         for (i in 0 until count) {
             var vh = recyclerView.getChildAt(i)
             val a = vh.findViewById<CheckBox>(R.id.check)
-            a.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    var name = vh.findViewById<TextView>(R.id.productName)
-                    list.add(name.toString())
-                }
+            var name = vh.findViewById<TextView>(R.id.productName)
+
+            if (a.isChecked) {
+                list.add(name.text.toString())
             }
-            val intent = Intent(this, CartActivity::class.java)
-            intent.putExtra("list", ArrayList<String>(list))
-            startActivity(intent)
         }
+        val intent = Intent(this, CartActivity::class.java)
+        intent.putExtra("list", ArrayList<String>(list))
+        startActivity(intent)
     }
 }

@@ -222,7 +222,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
         val stdList: ArrayList<Tarif> = ArrayList()
 
-        val query = "SELECT * FROM $TABLE_TARIFS where name = $name"
+        val query = "SELECT * FROM $TABLE_TARIFS where name = '$name'"
         val db = this.readableDatabase
 
         val cursor: Cursor?
@@ -272,13 +272,13 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
     fun addItemToCart(item: List<Tarif>) {
         val db = this.writableDatabase
-        val cartTable = "CREATE TABLE $TABLE_CART " +
+        /*val cartTable = "CREATE TABLE $TABLE_CART " +
                 "($COLUMN_NAME_CART TEXT, " +
                 "$COLUMN_DESCTIPTION_CART TEXT, " +
                 "$COLUMN_PRICE_CART INT, " +
                 "$COLUMN_IMAGE_CART TEXT)"
 
-        db?.execSQL(cartTable)
+        db?.execSQL(cartTable)*/
 
         val contentValues = ContentValues()
 
@@ -293,6 +293,15 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
     public fun getItemFromCart(): Tarif{
 
+        /*val db1 = this.writableDatabase
+        val cartTable = "CREATE TABLE $TABLE_CART " +
+                "($COLUMN_NAME_CART TEXT, " +
+                "$COLUMN_DESCTIPTION_CART TEXT, " +
+                "$COLUMN_PRICE_CART INT, " +
+                "$COLUMN_IMAGE_CART TEXT)"
+
+        db1?.execSQL(cartTable)*/
+
         val db = this.readableDatabase
         val query = "SELECT * FROM $TABLE_CART"
 
@@ -303,7 +312,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         val desc = cursor.getString(1)
         val price = cursor.getInt(2)
         val image = cursor.getString(3)
-        val std = Tarif(name, desc, price, image)
+        val std = Tarif(name = name, desctiption = desc, price = price, image = image)
         return std
     }
 }

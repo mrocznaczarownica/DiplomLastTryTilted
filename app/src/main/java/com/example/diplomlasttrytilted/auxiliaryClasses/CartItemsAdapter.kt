@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diplomlasttrytilted.R
+import com.example.diplomlasttrytilted.dataBase.Cart
 import com.example.diplomlasttrytilted.dataBase.Tarif
 
 class CartItemsAdapter(private val products: List<Tarif>): RecyclerView.Adapter<CartItemsAdapter.ViewHolder>() {
@@ -25,7 +26,7 @@ class CartItemsAdapter(private val products: List<Tarif>): RecyclerView.Adapter<
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val product = products[position]
         holder.name.text = product.name
-        holder.image.setImageResource(product.image.toInt())
+        //holder.image.setImageResource(product.image.toInt())
         holder.price.text = product.price.toString()
         holder.quantity.text = "1"
     }

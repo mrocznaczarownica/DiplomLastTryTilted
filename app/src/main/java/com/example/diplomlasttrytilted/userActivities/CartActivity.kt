@@ -12,6 +12,7 @@ import com.example.diplom.auxiliaryСlasses.CartItem
 import com.example.diplomlasttrytilted.R
 import com.example.diplomlasttrytilted.auxiliaryClasses.CartItemsAdapter
 import com.example.diplomlasttrytilted.dataBase.DBHelper
+import com.example.diplomlasttrytilted.dataBase.Tarif
 
 class CartActivity : AppCompatActivity() {
 
@@ -26,34 +27,13 @@ class CartActivity : AppCompatActivity() {
 
     private lateinit var cartItems: List<CartItem>
     private lateinit var dbHelper: DBHelper
+    lateinit var data :List<Tarif>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
 
         dbHelper = DBHelper(this)
-
-        val bundle = intent.extras
-        val list = bundle?.getStringArrayList("list")
-
-        recyclerViewCartItems = findViewById(R.id.recyclerViewCartItems)
-        recyclerViewCartItems.layoutManager = LinearLayoutManager(this)
-
-        if (list != null) {
-            for (item in list) {
-                //TODO:"1)написать в хелпере функцию для получения данных о товарах по имени в формате MutableList<Tarif> и кинуть этот лист в адаптер
-                // "2) нужно продумать момент перехода в корзину не через каталог а из главного меню"
-                val data = dbHelper.getProductsForName(item)
-                dbHelper.addItemToCart(data)
-
-                adapter = CartItemsAdapter(data)
-                val totalPrice = calculateTotalPrice(cartItems)
-                textViewTotalPrice.text = totalPrice.toString()
-            }
-        } else {
-            Toast.makeText(this, "Нет элементов в корзине", Toast.LENGTH_SHORT).show()
-        }
-
         //TODO:можно в $cart_item добавить кнопки для увеличения количества элементов
         recyclerViewCartItems = findViewById(R.id.recyclerViewCartItems)
         textViewTotalPrice = findViewById(R.id.textViewTotalPrice)
@@ -61,27 +41,40 @@ class CartActivity : AppCompatActivity() {
         editTextAddress = findViewById(R.id.editTextAddress)
         buttonPlaceOrder = findViewById(R.id.buttonPlaceOrder)
 
+        val bundle = intent.extras
+        val list = bundle?.getStringArrayList("list")
+
+        recyclerViewCartItems = findViewById(R.id.recyclerViewCartItems)
         recyclerViewCartItems.layoutManager = LinearLayoutManager(this)
         cartItems = getCartItems()
-        val cartAdapter = CartAdapter(cartItems)
-        //recyclerViewCartItems.adapter = cartAdapter
 
-        //val totalPrice = calculateTotalPrice(cartItems)
-        //textViewTotalPrice.text = getString(R.string.total_price, totalPrice)
+        if (list != null) {
+            for (item in list) {
+                //TODO:"1)написать в хелпере функцию для получения данных о товарах по имени в формате MutableList<Tarif> и кинуть этот лист в адаптер
+                // "2) нужно продумать момент перехода в корзину не через каталог а из главного меню"
+                data = dbHelper.getProductsForName(item.toString())
+                dbHelper.addItemToCart(data)
+            }
+            adapter = CartItemsAdapter(data)
+            val totalPrice = calculateTotalPrice(cartItems)//
+            textViewTotalPrice.text = totalPrice.toString()
+            recyclerViewCartItems.adapter = adapter
+
+        } else {
+            Toast.makeText(this, "Нет элементов в корзине", Toast.LENGTH_SHORT).show()
+        }
+
+        recyclerViewCartItems.layoutManager = LinearLayoutManager(this)
+
+        val cartAdapter = CartItemsAdapter(arrayListOf(dbHelper.getItemFromCart()) )
+        recyclerViewCartItems.adapter = cartAdapter
+
+        val totalPrice = calculateTotalPrice(cartItems)
+        textViewTotalPrice.text = getString(R.string.total_price)
 
         buttonPlaceOrder.setOnClickListener {
             placeOrder()
         }
-
-
-        // Создаем адаптер и устанавливаем его для RecyclerView
-        /*adapter = CartItemsAdapter(products)
-        recyclerViewCartItems.adapter = adapter*/
-
-        // Закрываем ресурсы
-        /*resultSet.close()
-        stmt.close()
-        conn.close()*/
     }
 
     private fun getCartItems(): List<CartItem> {
