@@ -5,15 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import java.sql.*
-import java.net.*
 import androidx.recyclerview.widget.RecyclerView
-import com.example.diplom.auxiliaryСlasses.CartItem
 import com.example.diplomlasttrytilted.R
-import com.example.diplomlasttrytilted.dataBase.Product
 import com.example.diplomlasttrytilted.dataBase.Tarif
 
-class CartItemsAdapter(private val products: MutableList<Tarif>): RecyclerView.Adapter<CartItemsAdapter.ViewHolder>() {
+class CartItemsAdapter(private val products: List<Tarif>): RecyclerView.Adapter<CartItemsAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.item_name)
         val price: TextView = itemView.findViewById(R.id.item_price)

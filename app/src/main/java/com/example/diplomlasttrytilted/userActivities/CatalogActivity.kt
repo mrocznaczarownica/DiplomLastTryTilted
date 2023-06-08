@@ -29,6 +29,7 @@ class CatalogActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+
         /*MyAsyncTask().execute()
 
         // Создаем адаптер и устанавливаем его для RecyclerView
@@ -36,6 +37,7 @@ class CatalogActivity : AppCompatActivity() {
         recyclerView.adapter = adapter*/
 
         recyclerView = findViewById(R.id.recyclerView)
+
         emptyView = findViewById(R.id.emptyView)
 
         dbHelper = DBHelper(this)
@@ -60,25 +62,22 @@ class CatalogActivity : AppCompatActivity() {
         }
     }
 
-    fun getName(): MutableList<String> {
-        check = findViewById(R.id.check)
-        var toCartList = mutableListOf<String>()
-        if(check != null) {
-            for (i in 0 until check.lineCount) {
-                if (check.isChecked) {
-                    var name: TextView = findViewById(R.id.productName)
-                    toCartList.add(name.text.toString())
+    fun addToCard(view: View) {
+        val ad: ProductAdapter = recyclerView.adapter as ProductAdapter
+        var count = recyclerView.childCount
+        var list = mutableListOf<String>()
+        for (i in 0 until count) {
+            var vh = recyclerView.getChildAt(i)
+            val a = vh.findViewById<CheckBox>(R.id.check)
+            a.setOnCheckedChangeListener { _, isChecked ->
+                if (isChecked) {
+                    var name = vh.findViewById<TextView>(R.id.productName)
+                    list.add(name.toString())
                 }
             }
-        }else{
-            val toast = Toast.makeText(this, "Корзина пуста", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, CartActivity::class.java)
+            intent.putExtra("list", ArrayList<String>(list))
+            startActivity(intent)
         }
-        return toCartList
-
-    }
-
-    fun addToCard(view: View) {
-        val intent = Intent(this, CartActivity::class.java)
-        startActivity(intent)
     }
 }

@@ -270,7 +270,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return Clients(firstName, name, lastName, phone, login, pass)
     }
 
-    fun addItemToCart(item: Cart) {
+    fun addItemToCart(item: List<Tarif>) {
         val db = this.writableDatabase
         val cartTable = "CREATE TABLE $TABLE_CART " +
                 "($COLUMN_NAME_CART TEXT, " +
@@ -282,16 +282,16 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
         val contentValues = ContentValues()
 
-        contentValues.put(COLUMN_NAME_CART, item.name)
-        contentValues.put(COLUMN_DESCTIPTION_CART, item.desctiption)
-        contentValues.put(COLUMN_PRICE_CART, item.price)
-        contentValues.put(COLUMN_IMAGE_CART, item.image)
+        contentValues.put(COLUMN_NAME_CART, item[0].toString())
+        contentValues.put(COLUMN_DESCTIPTION_CART, item[1].toString())
+        contentValues.put(COLUMN_PRICE_CART, item[2].toString())
+        contentValues.put(COLUMN_IMAGE_CART, item[3].toString())
 
         db.insert(TABLE_CART, null, contentValues)
         db.close()
     }
 
-    public fun getItemFromCart(): Cart {
+    public fun getItemFromCart(): Tarif{
 
         val db = this.readableDatabase
         val query = "SELECT * FROM $TABLE_CART"
@@ -303,6 +303,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         val desc = cursor.getString(1)
         val price = cursor.getInt(2)
         val image = cursor.getString(3)
-        return Cart(name, desc, price, image)
+        val std = Tarif(name, desc, price, image)
+        return std
     }
 }

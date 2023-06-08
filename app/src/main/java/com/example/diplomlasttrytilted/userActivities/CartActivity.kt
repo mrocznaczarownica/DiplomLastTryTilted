@@ -11,17 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.diplom.auxiliaryСlasses.CartItem
 import com.example.diplomlasttrytilted.R
 import com.example.diplomlasttrytilted.auxiliaryClasses.CartItemsAdapter
-import com.example.diplomlasttrytilted.auxiliaryClasses.ProductAdapter
 import com.example.diplomlasttrytilted.dataBase.DBHelper
-import com.example.diplomlasttrytilted.dataBase.Product
-import com.example.diplomlasttrytilted.dataBase.Tarif
-import java.net.URLEncoder
-import java.sql.DriverManager
 
 class CartActivity : AppCompatActivity() {
 
     private lateinit var recyclerViewCartItems: RecyclerView
     private lateinit var adapter: CartItemsAdapter
+    var quantity: Int = 1
 
     private lateinit var textViewTotalPrice: TextView
     private lateinit var editTextCustomerName: EditText
@@ -35,26 +31,30 @@ class CartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
 
-
-
         dbHelper = DBHelper(this)
+
+        val bundle = intent.extras
+        val list = bundle?.getStringArrayList("list")
 
         recyclerViewCartItems = findViewById(R.id.recyclerViewCartItems)
         recyclerViewCartItems.layoutManager = LinearLayoutManager(this)
 
-        val catalogActivity = CatalogActivity()
-        val list = catalogActivity.getName()
-        for (item in list) {
-            val products = dbHelper.getProductsForName(item)
-            if (products.isEmpty()) {
-                Toast.makeText(this, "Нет элементов в корзине", Toast.LENGTH_SHORT).show()
-            } else {
-                adapter = CartItemsAdapter(products as MutableList<Tarif>)
+        if (list != null) {
+            for (item in list) {
+                //TODO:"1)написать в хелпере функцию для получения данных о товарах по имени в формате MutableList<Tarif> и кинуть этот лист в адаптер
+                // "2) нужно продумать момент перехода в корзину не через каталог а из главного меню"
+                val data = dbHelper.getProductsForName(item)
+                dbHelper.addItemToCart(data)
+
+                adapter = CartItemsAdapter(data)
                 val totalPrice = calculateTotalPrice(cartItems)
                 textViewTotalPrice.text = totalPrice.toString()
             }
+        } else {
+            Toast.makeText(this, "Нет элементов в корзине", Toast.LENGTH_SHORT).show()
         }
 
+        //TODO:можно в $cart_item добавить кнопки для увеличения количества элементов
         recyclerViewCartItems = findViewById(R.id.recyclerViewCartItems)
         textViewTotalPrice = findViewById(R.id.textViewTotalPrice)
         editTextCustomerName = findViewById(R.id.editTextCustomerName)
@@ -62,11 +62,11 @@ class CartActivity : AppCompatActivity() {
         buttonPlaceOrder = findViewById(R.id.buttonPlaceOrder)
 
         recyclerViewCartItems.layoutManager = LinearLayoutManager(this)
-        //cartItems = getCartItems()
-        //val cartAdapter = CartAdapter(cartItems)
+        cartItems = getCartItems()
+        val cartAdapter = CartAdapter(cartItems)
         //recyclerViewCartItems.adapter = cartAdapter
 
-        val totalPrice = calculateTotalPrice(cartItems)
+        //val totalPrice = calculateTotalPrice(cartItems)
         //textViewTotalPrice.text = getString(R.string.total_price, totalPrice)
 
         buttonPlaceOrder.setOnClickListener {
@@ -83,11 +83,12 @@ class CartActivity : AppCompatActivity() {
         stmt.close()
         conn.close()*/
     }
-    /*private fun getCartItems(): List<CartItem> {
-        //  здесь код для получения списка товаров из корзины
-        *//*val shoppingCart = ShoppingCart.getInstance(this)
-        return shoppingCart.getCartItems()*//*
-    }*/
+
+    private fun getCartItems(): List<CartItem> {
+        val shoppingCart = dbHelper.getItemFromCart()
+        var result : List<CartItem> = arrayListOf(CartItem(shoppingCart, quantity))
+        return result
+    }
 
     private fun calculateTotalPrice(cartItems: List<CartItem>): Double {
         //  здесь код для расчета общей стоимости заказа на основе списка товаров
