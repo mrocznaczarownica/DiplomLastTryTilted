@@ -35,6 +35,8 @@ class CartActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
 
+
+
         dbHelper = DBHelper(this)
 
         recyclerViewCartItems = findViewById(R.id.recyclerViewCartItems)
@@ -42,26 +44,25 @@ class CartActivity : AppCompatActivity() {
 
         val catalogActivity = CatalogActivity()
         val list = catalogActivity.getName()
-        for (item in list){
+        for (item in list) {
             val products = dbHelper.getProductsForName(item)
-            if(products.isEmpty()){
+            if (products.isEmpty()) {
                 Toast.makeText(this, "Нет элементов в корзине", Toast.LENGTH_SHORT).show()
-            }
-            else{
+            } else {
                 adapter = CartItemsAdapter(products as MutableList<Tarif>)
                 val totalPrice = calculateTotalPrice(cartItems)
                 textViewTotalPrice.text = totalPrice.toString()
             }
         }
 
-        /*recyclerViewCartItems = findViewById(R.id.recyclerViewCartItems)
+        recyclerViewCartItems = findViewById(R.id.recyclerViewCartItems)
         textViewTotalPrice = findViewById(R.id.textViewTotalPrice)
         editTextCustomerName = findViewById(R.id.editTextCustomerName)
         editTextAddress = findViewById(R.id.editTextAddress)
         buttonPlaceOrder = findViewById(R.id.buttonPlaceOrder)
 
         recyclerViewCartItems.layoutManager = LinearLayoutManager(this)
-        cartItems = getCartItems()
+        //cartItems = getCartItems()
         //val cartAdapter = CartAdapter(cartItems)
         //recyclerViewCartItems.adapter = cartAdapter
 
@@ -70,43 +71,22 @@ class CartActivity : AppCompatActivity() {
 
         buttonPlaceOrder.setOnClickListener {
             placeOrder()
-        */}
-
-        /*// Получаем данные из удаленной базы данных
-        val products = mutableListOf<Product>()
-        val connString =
-            "jdbc:sqlserver://hnt8.ru:3333;databaseName=FS;user=Darya;password=okvpA37TB"
-        val query = "SELECT * FROM Product"
-        val url = "http://hnt8.ru:3333/query?queryString=" + URLEncoder.encode(query, "UTF-8")
-
-        // Устанавливаем соединение с базой данных и выполняем запрос
-        val conn = DriverManager.getConnection(connString)
-        val stmt = conn.createStatement()
-        val resultSet = stmt.executeQuery(query)
-
-        // Создаем модель данных и заполняем ее результатами запроса
-        while (resultSet.next()) {
-            val name = resultSet.getString("name")
-            val description = resultSet.getString("description")
-            val price = resultSet.getInt("price")
-            val image = resultSet.getString("image")
-            val product = Product(name, description, price, image)
-            products.add(product)
         }
 
+
         // Создаем адаптер и устанавливаем его для RecyclerView
-        adapter = CartItemsAdapter(products)
-        recyclerViewCartItems.adapter = adapter
+        /*adapter = CartItemsAdapter(products)
+        recyclerViewCartItems.adapter = adapter*/
 
         // Закрываем ресурсы
-        resultSet.close()
+        /*resultSet.close()
         stmt.close()
         conn.close()*/
     }
     /*private fun getCartItems(): List<CartItem> {
         //  здесь код для получения списка товаров из корзины
-        val shoppingCart = ShoppingCart.getInstance(this)
-        return shoppingCart.getCartItems()
+        *//*val shoppingCart = ShoppingCart.getInstance(this)
+        return shoppingCart.getCartItems()*//*
     }*/
 
     private fun calculateTotalPrice(cartItems: List<CartItem>): Double {
@@ -115,14 +95,15 @@ class CartActivity : AppCompatActivity() {
     }
 
     private fun placeOrder() {
-        /*val customerName = editTextCustomerName.text.toString()
+        val customerName = editTextCustomerName.text.toString()
         val address = editTextAddress.text.toString()
-        val totalPrice = calculateTotalPrice(cartItems)*/
+        val totalPrice = calculateTotalPrice(cartItems)
 
         // Создайте здесь код для отправки заказа на сервер и очистки корзины в локальном хранилище
         //ShoppingCart.getInstance(this).clearCart()
 
-        //Toast.makeText(this, "Ваш заказ на сумму $totalPrice принят", Toast.LENGTH_SHORT).show()
-        //finish()
+        Toast.makeText(this, "Ваш заказ на сумму $totalPrice принят", Toast.LENGTH_SHORT).show()
+        finish()
     }
+}
 

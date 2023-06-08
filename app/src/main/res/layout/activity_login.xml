@@ -31,7 +31,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:ignore="TouchTargetSizeCheck" />
+        tools:ignore="TouchTargetSizeCheck"
+        android:maxLength="10"/>
 
     <EditText
         android:inputType="textPassword"
@@ -47,7 +48,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logineditText"
         tools:ignore="TouchTargetSizeCheck"
-        android:onClick="passViewClick"/>
+        android:onClick="passViewClick"
+        android:maxLength="10"/>
 
     <Button
         android:id="@+id/button"

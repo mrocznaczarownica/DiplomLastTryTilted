@@ -5,15 +5,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.CheckBox
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diplomlasttrytilted.R
 import com.example.diplomlasttrytilted.auxiliaryClasses.ProductAdapter
-import com.example.diplomlasttrytilted.auxiliaryClasses.ProductAdapterNotLocal
 import com.example.diplomlasttrytilted.dataBase.DBHelper
-import com.example.diplomlasttrytilted.dataBase.Tarif
 
 class CatalogActivity : AppCompatActivity() {
 
@@ -63,17 +61,20 @@ class CatalogActivity : AppCompatActivity() {
     }
 
     fun getName(): MutableList<String> {
-        check = product_item.findViewById(R.id.check)
+        check = findViewById(R.id.check)
         var toCartList = mutableListOf<String>()
-
-        for (i in 0 until check.lineCount) {
-            if (check.isChecked) {
-                var name:TextView = findViewById(R.id.productName)
-                toCartList.add(name.text.toString())
+        if(check != null) {
+            for (i in 0 until check.lineCount) {
+                if (check.isChecked) {
+                    var name: TextView = findViewById(R.id.productName)
+                    toCartList.add(name.text.toString())
+                }
             }
+        }else{
+            val toast = Toast.makeText(this, "Корзина пуста", Toast.LENGTH_SHORT).show()
         }
-
         return toCartList
+
     }
 
     fun addToCard(view: View) {

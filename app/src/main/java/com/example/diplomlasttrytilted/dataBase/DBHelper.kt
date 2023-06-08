@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper
 
 
 class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
-
     companion object {
         private const val DATABASE_NAME = "users.db"
         private const val DATABASE_VERSION = 1
@@ -29,11 +28,16 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         private const val COLUMN_ROL = "rol"
 
         private const val TABLE_TARIFS = "Tarif"
-        private const val COLUMN_ID_TARIF = "id"
         private const val COLUMN_NAME_TARIF = "name"
         private const val COLUMN_DESCTIPTION = "desctiption"
         private const val COLUMN_PRICE = "price"
         private const val COLUMN_IMAGE = "image"
+
+        private const val TABLE_CART = "Cart"
+        private const val COLUMN_NAME_CART = "name"
+        private const val COLUMN_DESCTIPTION_CART = "desctiption"
+        private const val COLUMN_PRICE_CART = "price"
+        private const val COLUMN_IMAGE_CART = "image"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -52,14 +56,21 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 "$COLUMN_PRICE INT, " +
                 "$COLUMN_IMAGE TEXT)"
 
+        val cartTable = "CREATE TABLE $TABLE_CART " +
+                "($COLUMN_NAME_CART TEXT, " +
+                "$COLUMN_DESCTIPTION_CART TEXT, " +
+                "$COLUMN_PRICE_CART INT, " +
+                "$COLUMN_IMAGE_CART TEXT)"
 
         db?.execSQL(tarifTable)
         db?.execSQL(createTable)
+        db?.execSQL(cartTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
             db.execSQL("DROP TABLE IF EXISTS '$TABLE_TARIFS'")
             db.execSQL("DROP TABLE IF EXISTS '$TABLE_CLIENTS'")
+            db.execSQL("DROP TABLE IF EXISTS '$TABLE_CART'")
             onCreate(db)
     }
 
@@ -257,5 +268,41 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         val login = cursor.getString(5)
         val pass = cursor.getString(6)
         return Clients(firstName, name, lastName, phone, login, pass)
+    }
+
+    fun addItemToCart(item: Cart) {
+        val db = this.writableDatabase
+        val cartTable = "CREATE TABLE $TABLE_CART " +
+                "($COLUMN_NAME_CART TEXT, " +
+                "$COLUMN_DESCTIPTION_CART TEXT, " +
+                "$COLUMN_PRICE_CART INT, " +
+                "$COLUMN_IMAGE_CART TEXT)"
+
+        db?.execSQL(cartTable)
+
+        val contentValues = ContentValues()
+
+        contentValues.put(COLUMN_NAME_CART, item.name)
+        contentValues.put(COLUMN_DESCTIPTION_CART, item.desctiption)
+        contentValues.put(COLUMN_PRICE_CART, item.price)
+        contentValues.put(COLUMN_IMAGE_CART, item.image)
+
+        db.insert(TABLE_CART, null, contentValues)
+        db.close()
+    }
+
+    public fun getItemFromCart(): Cart {
+
+        val db = this.readableDatabase
+        val query = "SELECT * FROM $TABLE_CART"
+
+        val cursor = db.rawQuery(query,null)
+
+        cursor.moveToFirst()
+        val name = cursor.getString(0)
+        val desc = cursor.getString(1)
+        val price = cursor.getInt(2)
+        val image = cursor.getString(3)
+        return Cart(name, desc, price, image)
     }
 }
