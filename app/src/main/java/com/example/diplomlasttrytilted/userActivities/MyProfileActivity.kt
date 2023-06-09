@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import com.example.diplomlasttrytilted.R
+import com.example.diplomlasttrytilted.dataBase.Clients
 import com.example.diplomlasttrytilted.dataBase.DBHelper
 
 class MyProfileActivity : AppCompatActivity() {
@@ -55,10 +56,10 @@ class MyProfileActivity : AppCompatActivity() {
             } else {
                 // Сохраняем изменения и переключаемся в режим просмотра
                 isEditMode = false
+                dbHelper.deleteClient(profileLogin.text.toString())
                 editProfileButton.text = getString(R.string.edit_profile_button)
                 disableEditing()
-                //saveProfileChanges()
-                //TODO:реализовать две функции выше
+                dbHelper.addClient(Clients(profileFirstName.text.toString(), profileName.text.toString(), profileLastName.text.toString(),profilePhone.text.toString(),profileLogin.text.toString(),profilePass.text.toString(),))
             }
         }
     }

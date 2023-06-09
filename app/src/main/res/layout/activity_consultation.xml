@@ -4,9 +4,110 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".userActivities.ConsultationActivity"
-    android:background="@color/main">
+    android:background="@color/main"
+    android:scrollbarAlwaysDrawHorizontalTrack="false"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    tools:context=".userActivities.ConsultationActivity">
 
+    <!--<ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">-->
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <EditText
+                android:id="@+id/firstName"
+                android:layout_width="275dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="58dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="58dp"
+                android:hint="Фамилия"
+                android:maxLength="15"
+                android:textColorHint="#DDDDDD"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="275dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="58dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="58dp"
+                android:hint="Имя"
+                android:maxLength="10"
+                android:textColorHint="#DDDDDD"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <EditText
+                android:id="@+id/lastName"
+                android:layout_width="275dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="58dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="58dp"
+                android:hint="Отчество"
+                android:maxLength="20"
+                android:textColorHint="#DDDDDD"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="275dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="58dp"
+                android:layout_marginTop="17dp"
+                android:layout_marginEnd="58dp"
+                android:hint="Номер телефона"
+                android:inputType="phone"
+                android:maxLength="11"
+                android:textColorHint="#DDDDDD"
+                tools:ignore="TouchTargetSizeCheck" />
+
+            <DatePicker
+                android:id="@+id/datePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border_item"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner" />
+
+            <TimePicker
+                android:id="@+id/timeSelector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/border_item"
+                android:minHeight="48dp"
+
+                android:scrollbarAlwaysDrawHorizontalTrack="true"
+                android:scrollbarStyle="insideOverlay"
+                android:textAlignment="center"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <Button
+                android:id="@+id/registerButton"
+                android:layout_width="275dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="58dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="58dp"
+                android:backgroundTint="#A5A6F6"
+                android:onClick="consuttationButtonClick"
+                android:text="Записаться"
+                tools:ignore="TouchTargetSizeCheck" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!--</ScrollView>-->
 </androidx.constraintlayout.widget.ConstraintLayout>

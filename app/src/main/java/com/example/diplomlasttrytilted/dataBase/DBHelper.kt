@@ -38,6 +38,13 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         private const val COLUMN_DESCTIPTION_CART = "desctiption"
         private const val COLUMN_PRICE_CART = "price"
         private const val COLUMN_IMAGE_CART = "image"
+
+        private const val TABLE_CONSULT = "Consultation"
+        private const val COLUMN_FNAME_CONSULT = "firstName"
+        private const val COLUMN_NAME_CONSULT = "name"
+        private const val COLUMN_LNAME_CONSULT = "lastName"
+        private const val COLUMN_DATE = "date"
+        private const val COLUMN_PHONE_CONSULT = "phone"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -62,15 +69,24 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 "$COLUMN_PRICE_CART INT, " +
                 "$COLUMN_IMAGE_CART TEXT)"
 
+        val consultTable = "CREATE TABLE $TABLE_CONSULT " +
+                "($COLUMN_FNAME_CONSULT TEXT, " +
+                "$COLUMN_NAME_CONSULT TEXT, " +
+                "$COLUMN_LNAME_CONSULT INT, " +
+                "$COLUMN_DATE TEXT, " +
+                "$COLUMN_PHONE_CONSULT TEXT)"
+
         db?.execSQL(tarifTable)
         db?.execSQL(createTable)
         db?.execSQL(cartTable)
+        db?.execSQL(consultTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
             db.execSQL("DROP TABLE IF EXISTS '$TABLE_TARIFS'")
             db.execSQL("DROP TABLE IF EXISTS '$TABLE_CLIENTS'")
             db.execSQL("DROP TABLE IF EXISTS '$TABLE_CART'")
+            db.execSQL("DROP TABLE IF EXISTS '$TABLE_CONSULT'")
             onCreate(db)
     }
 
@@ -86,6 +102,12 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         contentValues.put(COLUMN_PASSWORD, user.password)
 
         db.insert(TABLE_CLIENTS, null, contentValues)
+        db.close()
+    }
+
+    fun deleteClient(login: String) {
+        val db = this.writableDatabase
+        db.delete(TABLE_CLIENTS, "$COLUMN_LOGIN = ?", arrayOf(login))
         db.close()
     }
 
@@ -291,7 +313,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.close()
     }
 
-    public fun getItemFromCart(): Tarif{
+    public fun getItemFromCart(): List<Tarif>{
 
         /*val db1 = this.writableDatabase
         val cartTable = "CREATE TABLE $TABLE_CART " +
@@ -312,7 +334,15 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         val desc = cursor.getString(1)
         val price = cursor.getInt(2)
         val image = cursor.getString(3)
-        val std = Tarif(name = name, desctiption = desc, price = price, image = image)
-        return std
+        val std = Tarif(name, desc, price, image)
+        val stdList = arrayListOf<Tarif>()
+        stdList.add(std)
+        return stdList
+    }
+
+    fun deleteItemFromCart() {
+        val db = this.writableDatabase
+        db.delete(TABLE_CART, null, null)
+        db.close()
     }
 }

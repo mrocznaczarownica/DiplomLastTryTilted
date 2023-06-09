@@ -46,7 +46,7 @@ class CartActivity : AppCompatActivity() {
 
         recyclerViewCartItems = findViewById(R.id.recyclerViewCartItems)
         recyclerViewCartItems.layoutManager = LinearLayoutManager(this)
-        cartItems = getCartItems()
+        //cartItems = getCartItems()
 
         if (list != null) {
             for (item in list) {
@@ -56,8 +56,6 @@ class CartActivity : AppCompatActivity() {
                 dbHelper.addItemToCart(data)
             }
             adapter = CartItemsAdapter(data)
-            val totalPrice = calculateTotalPrice(cartItems)//
-            textViewTotalPrice.text = totalPrice.toString()
             recyclerViewCartItems.adapter = adapter
 
         } else {
@@ -66,21 +64,20 @@ class CartActivity : AppCompatActivity() {
 
         recyclerViewCartItems.layoutManager = LinearLayoutManager(this)
 
-        val cartAdapter = CartItemsAdapter(arrayListOf(dbHelper.getItemFromCart()) )
+        val cartAdapter = CartItemsAdapter(dbHelper.getItemFromCart())
         recyclerViewCartItems.adapter = cartAdapter
 
-        val totalPrice = calculateTotalPrice(cartItems)
         textViewTotalPrice.text = getString(R.string.total_price)
 
         buttonPlaceOrder.setOnClickListener {
-            placeOrder()
+            if(editTextAddress.text.toString().isNotEmpty() && editTextCustomerName.text.toString().isNotEmpty()) {
+                placeOrder()
+                dbHelper.deleteItemFromCart()
+                list?.clear()
+            }else{
+                Toast.makeText(this, "Заполните адрес и имя пользователя", Toast.LENGTH_SHORT).show()
+            }
         }
-    }
-
-    private fun getCartItems(): List<CartItem> {
-        val shoppingCart = dbHelper.getItemFromCart()
-        var result : List<CartItem> = arrayListOf(CartItem(shoppingCart, quantity))
-        return result
     }
 
     private fun calculateTotalPrice(cartItems: List<CartItem>): Double {
@@ -89,14 +86,7 @@ class CartActivity : AppCompatActivity() {
     }
 
     private fun placeOrder() {
-        val customerName = editTextCustomerName.text.toString()
-        val address = editTextAddress.text.toString()
-        val totalPrice = calculateTotalPrice(cartItems)
-
-        // Создайте здесь код для отправки заказа на сервер и очистки корзины в локальном хранилище
-        //ShoppingCart.getInstance(this).clearCart()
-
-        Toast.makeText(this, "Ваш заказ на сумму $totalPrice принят", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Ваш заказ на сумму принят", Toast.LENGTH_SHORT).show()
         finish()
     }
 }

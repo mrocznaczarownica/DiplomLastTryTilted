@@ -23,19 +23,6 @@
         android:onClick="cartButtonClick"/>
 
     <ImageButton
-        android:id="@+id/checkOrdersImageButton"
-        android:layout_width="108dp"
-        android:layout_height="110dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="330dp"
-        android:background="#25274D"
-        android:src="@drawable/checkorder"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpeakableTextPresentCheck"
-        android:onClick="checkOrdersButtonClick"/>
-
-    <ImageButton
         android:id="@+id/createOrderImageButton"
         android:layout_width="108dp"
         android:layout_height="110dp"
@@ -89,14 +76,14 @@
         android:id="@+id/consultationImageButton"
         android:layout_width="108dp"
         android:layout_height="110dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="36dp"
         android:layout_marginTop="98dp"
         android:background="#25274D"
+        android:onClick="consultationButtonClick"
         android:scaleType="centerInside"
         android:src="@drawable/consultation"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkOrdersImageButton"
-        tools:ignore="SpeakableTextPresentCheck"
-        android:onClick="consultationButtonClick"/>
+        app:layout_constraintTop_toBottomOf="@+id/catalogImageButton"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -15,50 +15,63 @@
         android:background="@color/main"
         android:layout_margin="25dp">
 
-        <TextView
+        <EditText
             android:layout_margin="15dp"
+            android:enabled="false"
             android:id="@+id/profile_firstname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Фамилия"/>
+            android:text="Фамилия"
+            android:maxLength="20"/>
 
         <!-- Поле имени пользователя -->
-        <TextView
+        <EditText
             android:layout_margin="15dp"
+            android:enabled="false"
             android:id="@+id/profile_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/profile_name"/>
+            android:text="@string/profile_name"
+            android:maxLength="20"/>
 
-        <TextView
+        <EditText
             android:layout_margin="15dp"
+            android:enabled="false"
             android:id="@+id/profile_lastname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Отчество"/>
+            android:text="Отчество"
+            android:maxLength="20"/>
 
         <!-- Поле адреса электронной почты -->
-        <TextView
+        <EditText
             android:layout_margin="15dp"
             android:id="@+id/profile_phone"
+            android:inputType="phone"
             android:layout_width="match_parent"
+            android:enabled="false"
             android:layout_height="wrap_content"
-            android:text="Номер телефона"/>
+            android:text="Номер телефона"
+            android:maxLength="11"/>
 
         <!-- Поле номера телефона -->
         <TextView
             android:layout_margin="15dp"
             android:id="@+id/profile_login"
+            android:enabled="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Логин"/>
+            android:text="Логин"
+            android:maxLength="20"/>
 
-        <TextView
+        <EditText
             android:layout_margin="15dp"
             android:id="@+id/profile_pass"
+            android:enabled="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Пароль"/>
+            android:text="Пароль"
+            android:maxLength="20"/>
 
         <!-- Кнопка для редактирования профиля -->
         <Button
