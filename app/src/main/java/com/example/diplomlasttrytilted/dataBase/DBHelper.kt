@@ -83,11 +83,11 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-            db.execSQL("DROP TABLE IF EXISTS '$TABLE_TARIFS'")
-            db.execSQL("DROP TABLE IF EXISTS '$TABLE_CLIENTS'")
-            db.execSQL("DROP TABLE IF EXISTS '$TABLE_CART'")
-            db.execSQL("DROP TABLE IF EXISTS '$TABLE_CONSULT'")
-            onCreate(db)
+        db.execSQL("DROP TABLE IF EXISTS '$TABLE_TARIFS'")
+        db.execSQL("DROP TABLE IF EXISTS '$TABLE_CLIENTS'")
+        db.execSQL("DROP TABLE IF EXISTS '$TABLE_CART'")
+        db.execSQL("DROP TABLE IF EXISTS '$TABLE_CONSULT'")
+        onCreate(db)
     }
 
     fun addClient(user: Clients) {
@@ -229,18 +229,23 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
     fun getProductsForName(name:String): List<Tarif> {
-/*        val db1 = this.writableDatabase
+        val db1 = this.writableDatabase
         val tarifTable = "CREATE TABLE $TABLE_TARIFS " +
                 "($COLUMN_NAME_TARIF TEXT, " +
                 "$COLUMN_DESCTIPTION TEXT, " +
                 "$COLUMN_PRICE INT, " +
                 "$COLUMN_IMAGE TEXT)"
-        db1?.execSQL(tarifTable)*/
+        db1?.execSQL(tarifTable)
 
-        /*val db1 = this.writableDatabase
-        val tarifTable = "INSERT INTO $TABLE_TARIFS VALUES" +
-                "('Гроб лакированный', 'Описания нет', 12000, 'image')"
-        db1?.execSQL(tarifTable)*/
+        /*TODO: прогнать класс в таком порядке: 1.удаление таблицы тариф
+        2. создание таблицы
+        3.добавление новых данных, обязательно сменить картинки(на компе у юли)
+        далее тест корзины и заказа с новыми данными*/
+        val db2 = this.writableDatabase
+        val tarifTable1 = "INSERT INTO $TABLE_TARIFS VALUES" +
+                "('Гроб лакированный', 'Описания нет', 12000, 'image')," +
+                "('Гроб из красного дерева', 'Описания нет', 15000, 'image')"
+        db2?.execSQL(tarifTable1)
 
         val stdList: ArrayList<Tarif> = ArrayList()
 

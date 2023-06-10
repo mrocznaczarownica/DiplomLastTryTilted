@@ -62,11 +62,6 @@ class CartActivity : AppCompatActivity() {
             Toast.makeText(this, "Нет элементов в корзине", Toast.LENGTH_SHORT).show()
         }
 
-        recyclerViewCartItems.layoutManager = LinearLayoutManager(this)
-
-        val cartAdapter = CartItemsAdapter(dbHelper.getItemFromCart())
-        recyclerViewCartItems.adapter = cartAdapter
-
         textViewTotalPrice.text = getString(R.string.total_price)
 
         buttonPlaceOrder.setOnClickListener {
