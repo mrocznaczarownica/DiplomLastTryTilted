@@ -36,7 +36,7 @@ class CartItemsAdapter(private val products: List<Tarif>): RecyclerView.Adapter<
         holder.name.text = product.name
         //holder.image.setImageResource(product.image.toInt())
         holder.price.text = product.price.toString() + " руб."
-        var qua:Int = 1
+        var qua = 1
         val max = 5
         holder.quantity.text = qua.toString()
 
@@ -45,6 +45,7 @@ class CartItemsAdapter(private val products: List<Tarif>): RecyclerView.Adapter<
                 qua += 1
                 holder.quantity.text = qua.toString()
                 var b = product.price.toString().toInt() * qua
+                holder.error.text = ""
                 holder.total.text = "Сумма: $b"
             }
             else{
@@ -56,8 +57,12 @@ class CartItemsAdapter(private val products: List<Tarif>): RecyclerView.Adapter<
             if(qua > 0){
                 qua -= 1
                 holder.quantity.text = qua.toString()
+                holder.error.text = ""
                 var b = product.price.toString().toInt() * qua
                 holder.total.text = "Сумма: $b"
+            }
+            else{
+                holder.error.text = "Количество товара не может быть меньше нуля"
             }
         }
     }

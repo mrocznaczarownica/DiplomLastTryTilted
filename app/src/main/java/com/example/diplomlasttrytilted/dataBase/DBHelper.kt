@@ -1,10 +1,12 @@
 package com.example.diplomlasttrytilted.dataBase
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 
 
 class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -182,7 +184,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
     fun getAllProducts(): List<Tarif> {
-/*        val db1 = this.writableDatabase
+        /*val db1 = this.writableDatabase
         val tarifTable = "CREATE TABLE $TABLE_TARIFS " +
                 "($COLUMN_NAME_TARIF TEXT, " +
                 "$COLUMN_DESCTIPTION TEXT, " +
@@ -190,11 +192,20 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 "$COLUMN_IMAGE TEXT)"
         db1?.execSQL(tarifTable)*/
 
-        /*val db1 = this.writableDatabase
-        val tarifTable = "INSERT INTO $TABLE_TARIFS VALUES" +
-                "('Гроб лакированный', 'Описания нет', 12000, 'image')"
-        db1?.execSQL(tarifTable)*/
+        /*val db2 = this.writableDatabase
+        val tarifTable1 = "INSERT INTO $TABLE_TARIFS VALUES" +
+                *//*"('Гроб лакированный', 'Описания нет', 12000, 'image')," +*//*
+                "('Гроб из красного дерева', 'Описания нет', 15000, 'image')"
+        db2?.execSQL(tarifTable1)*/
 
+        /*val db2 = this.writableDatabase
+        val tarifTable1 = "INSERT INTO $TABLE_TARIFS VALUES" +
+                "('Гроб лакированный', 'Описания нет', 12000, 'image')," +
+                "('Кремация', 'Описания нет', 20000, 'image')," +
+                "('Гроб Дизайнерский', 'Описания нет', 30000, 'image')"
+//                "('Гроб из красного дерева', 'Описания нет', 15000, 'image')"
+        db2?.execSQL(tarifTable1)
+*/
         val stdList: ArrayList<Tarif> = ArrayList()
 
         val query = "SELECT * FROM $TABLE_TARIFS"
@@ -229,53 +240,63 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     }
 
     fun getProductsForName(name:String): List<Tarif> {
-        val db1 = this.writableDatabase
+        /*val db1 = this.writableDatabase
         val tarifTable = "CREATE TABLE $TABLE_TARIFS " +
                 "($COLUMN_NAME_TARIF TEXT, " +
                 "$COLUMN_DESCTIPTION TEXT, " +
                 "$COLUMN_PRICE INT, " +
                 "$COLUMN_IMAGE TEXT)"
-        db1?.execSQL(tarifTable)
+        db1?.execSQL(tarifTable)*/
 
         /*TODO: прогнать класс в таком порядке: 1.удаление таблицы тариф
         2. создание таблицы
         3.добавление новых данных, обязательно сменить картинки(на компе у юли)
         далее тест корзины и заказа с новыми данными*/
-        val db2 = this.writableDatabase
+        /*val db2 = this.writableDatabase
         val tarifTable1 = "INSERT INTO $TABLE_TARIFS VALUES" +
                 "('Гроб лакированный', 'Описания нет', 12000, 'image')," +
-                "('Гроб из красного дерева', 'Описания нет', 15000, 'image')"
+                "('Кремация', 'Описания нет', 20000, 'image')," +
+                "('Гроб Дизайнерский', 'Описания нет', 30000, 'image')"
+//                "('Гроб из красного дерева', 'Описания нет', 15000, 'image')"
         db2?.execSQL(tarifTable1)
-
+*/
         val stdList: ArrayList<Tarif> = ArrayList()
+        var std:Tarif
 
-        val query = "SELECT * FROM $TABLE_TARIFS where name = '$name'"
+        val query = "SELECT * FROM $TABLE_TARIFS where $COLUMN_NAME_TARIF = '$name'"
         val db = this.readableDatabase
 
         val cursor: Cursor?
 
         try {
-            cursor = db.rawQuery(query,null)
+            //cursor = db.rawQuery(query,null)
+            cursor = db.query(TABLE_TARIFS,
+                arrayOf(COLUMN_NAME_TARIF, COLUMN_DESCTIPTION, COLUMN_PRICE, COLUMN_IMAGE),
+                "COLUMN_NAME_TARIF = ?", arrayOf(name),
+                null, null, null, null)
         }
         catch (e:Exception)
         {
-            db.execSQL(query)
+            db.rawQuery(query, null)
+            Log.e("text", e.message.toString())
             return ArrayList()
         }
         var name:String
         var desctiption: String
         var price: Int
         var image: String
-        if(cursor.moveToFirst())
-        {
-            do {
-                name = cursor.getString(0)
-                desctiption = cursor.getString(1)
-                price = cursor.getInt(2)
-                image = cursor.getString(3)
-                val std = Tarif(name = name, desctiption = desctiption, price = price, image = image)
-                stdList.add(std)
-            }while (cursor.moveToNext())
+        if(cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    name = cursor.getString(0)
+                    desctiption = cursor.getString(1)
+                    price = cursor.getInt(2)
+                    image = cursor.getString(3)
+                    //std = Tarif(name = name, desctiption = desctiption, price = price, image = image)
+                    stdList.add(Tarif(name, desctiption, price, image))
+                    //stdList.add(Tarif(name = name, desctiption = desctiption, price = price, image = image))
+                } while (cursor.moveToNext())
+            }
         }
         return stdList
     }
@@ -297,22 +318,25 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return Clients(firstName, name, lastName, phone, login, pass)
     }
 
-    fun addItemToCart(item: List<Tarif>) {
+    fun addItemToCart(item: List<String>) {
         val db = this.writableDatabase
-        /*val cartTable = "CREATE TABLE $TABLE_CART " +
+        /*val tarifTable1 = "DROP TABLE $TABLE_CART"
+        db?.execSQL(tarifTable1)
+        val cartTable = "CREATE TABLE $TABLE_CART " +
                 "($COLUMN_NAME_CART TEXT, " +
                 "$COLUMN_DESCTIPTION_CART TEXT, " +
                 "$COLUMN_PRICE_CART INT, " +
                 "$COLUMN_IMAGE_CART TEXT)"
 
         db?.execSQL(cartTable)*/
+        //var list:List<String> = arrayListOf("Гроб из красного дерева", "Описания нет", "15000", "image")
 
         val contentValues = ContentValues()
 
-        contentValues.put(COLUMN_NAME_CART, item[0].toString())
-        contentValues.put(COLUMN_DESCTIPTION_CART, item[1].toString())
-        contentValues.put(COLUMN_PRICE_CART, item[2].toString())
-        contentValues.put(COLUMN_IMAGE_CART, item[3].toString())
+        contentValues.put(COLUMN_NAME_CART, item.get(0))
+        contentValues.put(COLUMN_DESCTIPTION_CART, item.get(1))
+        contentValues.put(COLUMN_PRICE_CART, item.get(2))
+        contentValues.put(COLUMN_IMAGE_CART, item.get(3))
 
         db.insert(TABLE_CART, null, contentValues)
         db.close()

@@ -28,22 +28,10 @@ class CatalogActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
-
-        /*MyAsyncTask().execute()
-
-        // Создаем адаптер и устанавливаем его для RecyclerView
-        adapter = ProductAdapter(products)
-        recyclerView.adapter = adapter*/
-
         recyclerView = findViewById(R.id.recyclerView)
-
         emptyView = findViewById(R.id.emptyView)
-
         dbHelper = DBHelper(this)
-
         adapter = ProductAdapter()
-
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 

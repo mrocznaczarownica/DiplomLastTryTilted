@@ -28,6 +28,8 @@ class CartActivity : AppCompatActivity() {
     private lateinit var cartItems: List<CartItem>
     private lateinit var dbHelper: DBHelper
     lateinit var data :List<Tarif>
+    lateinit var data3 :List<Tarif>
+    lateinit var data2 :List<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,16 +48,17 @@ class CartActivity : AppCompatActivity() {
 
         recyclerViewCartItems = findViewById(R.id.recyclerViewCartItems)
         recyclerViewCartItems.layoutManager = LinearLayoutManager(this)
-        //cartItems = getCartItems()
 
         if (list != null) {
             for (item in list) {
                 //TODO:"1)написать в хелпере функцию для получения данных о товарах по имени в формате MutableList<Tarif> и кинуть этот лист в адаптер
                 // "2) нужно продумать момент перехода в корзину не через каталог а из главного меню"
                 data = dbHelper.getProductsForName(item.toString())
-                dbHelper.addItemToCart(data)
+                data2 = arrayListOf("Гроб из красного дерева", "Описания нет", "15000", "image")
+                data3 = arrayListOf(Tarif("Гроб из красного дерева", "Описания нет", 15000, "image"))
+                dbHelper.addItemToCart(data2)
             }
-            adapter = CartItemsAdapter(data)
+            adapter = CartItemsAdapter(data3)
             recyclerViewCartItems.adapter = adapter
 
         } else {

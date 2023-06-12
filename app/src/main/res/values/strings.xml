@@ -27,7 +27,7 @@
     <string name="no_items">No items to display</string>
 
     <!-- Формат отображения цены товара -->
-    <string name="product_price">%d USD</string>
+    <string name="product_price">%d руб.</string>
     <string name="profile_name">Имя:</string>
     <string name="profile_email">Email:</string>
     <string name="profile_phone">Логин:</string>
