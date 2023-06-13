@@ -47,6 +47,12 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         private const val COLUMN_LNAME_CONSULT = "lastName"
         private const val COLUMN_DATE = "date"
         private const val COLUMN_PHONE_CONSULT = "phone"
+
+        private const val ZAKAZ = "Order"
+        private const val COLUMN_NAME_PRODUCT = "nameProduct"
+        private const val COLUMN_PRICE_ORDER = "price"
+        private const val COLUMN_QUANTIY = "quantity"
+        private const val COLUMN_DATE_ORDER = "date"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -78,10 +84,17 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                 "$COLUMN_DATE TEXT, " +
                 "$COLUMN_PHONE_CONSULT TEXT)"
 
+        val orderTable = "CREATE TABLE " + ZAKAZ +
+                "($COLUMN_NAME_PRODUCT TEXT, " +
+                "$COLUMN_PRICE_ORDER INT, " +
+                "$COLUMN_QUANTIY INT, " +
+                "$COLUMN_DATE_ORDER TEXT)"
+
         db?.execSQL(tarifTable)
         db?.execSQL(createTable)
         db?.execSQL(cartTable)
         db?.execSQL(consultTable)
+        db?.execSQL(orderTable)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -89,6 +102,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.execSQL("DROP TABLE IF EXISTS '$TABLE_CLIENTS'")
         db.execSQL("DROP TABLE IF EXISTS '$TABLE_CART'")
         db.execSQL("DROP TABLE IF EXISTS '$TABLE_CONSULT'")
+        db.execSQL("DROP TABLE IF EXISTS '$ZAKAZ'")
         onCreate(db)
     }
 
@@ -346,7 +360,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.close()
     }
 
-    public fun getItemFromCart(): List<Tarif>{
+    public fun getItemFromCart(): List<Cart>{
 
         /*val db1 = this.writableDatabase
         val cartTable = "CREATE TABLE $TABLE_CART " +
@@ -367,8 +381,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         val desc = cursor.getString(1)
         val price = cursor.getInt(2)
         val image = cursor.getString(3)
-        val std = Tarif(name, desc, price, image)
-        val stdList = arrayListOf<Tarif>()
+        val std = Cart(name, desc, price, image)
+        val stdList = arrayListOf<Cart>()
         stdList.add(std)
         return stdList
     }
@@ -377,5 +391,56 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         val db = this.writableDatabase
         db.delete(TABLE_CART, null, null)
         db.close()
+    }
+
+    fun addItemToOrder(item: List<String>) {
+        val db = this.writableDatabase
+        /*val orderTable = "CREATE TABLE " + ZAKAZ +
+                "($COLUMN_NAME_PRODUCT TEXT, " +
+                "$COLUMN_PRICE_ORDER INT, " +
+                "$COLUMN_QUANTIY INT, " +
+                "$COLUMN_DATE_ORDER TEXT)"
+
+        db?.execSQL(orderTable)*/
+        //var list:List<String> = arrayListOf("Гроб из красного дерева", "Описания нет", "15000", "image")
+
+        val contentValues = ContentValues()
+
+        contentValues.put(COLUMN_NAME_PRODUCT, item.get(0))
+        contentValues.put(COLUMN_PRICE_ORDER, item.get(1))//desc
+        contentValues.put(COLUMN_QUANTIY, item.get(2))//price
+        contentValues.put(COLUMN_DATE_ORDER, item.get(3))//image
+
+        db.insert(ZAKAZ, null, contentValues)
+        db.close()
+    }
+
+    public fun getItemFromOrder(): List<Order>{
+        /*val db1 = this.writableDatabase
+        val orderTable = "CREATE TABLE " + ZAKAZ +
+                "($COLUMN_NAME_PRODUCT TEXT, " +
+                "$COLUMN_PRICE_ORDER INT, " +
+                "$COLUMN_QUANTIY INT, " +
+                "$COLUMN_DATE_ORDER TEXT)"
+
+        db1?.execSQL(orderTable)*/
+
+        val db = this.readableDatabase
+        //val query = "SELECT * FROM TABLE_ORDERS"
+
+        val cursor = db.query(ZAKAZ,
+            arrayOf(COLUMN_NAME_PRODUCT, COLUMN_PRICE_ORDER, COLUMN_QUANTIY, COLUMN_DATE_ORDER),
+            null,
+            null, null, null, null)
+
+        cursor.moveToFirst()
+        val nameProduct = cursor.getString(0)
+        val price = cursor.getInt(1)
+        val quantity = cursor.getInt(2)
+        val date = cursor.getString(3)
+        val std = Order(nameProduct,price, quantity,  date)
+        val stdList = arrayListOf<Order>()
+        stdList.add(std)
+        return stdList
     }
 }

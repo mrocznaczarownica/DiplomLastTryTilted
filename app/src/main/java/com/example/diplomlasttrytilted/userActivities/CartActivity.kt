@@ -15,6 +15,9 @@ import com.example.diplomlasttrytilted.R
 import com.example.diplomlasttrytilted.auxiliaryClasses.CartItemsAdapter
 import com.example.diplomlasttrytilted.dataBase.DBHelper
 import com.example.diplomlasttrytilted.dataBase.Tarif
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class CartActivity : AppCompatActivity() {
 
@@ -32,6 +35,8 @@ class CartActivity : AppCompatActivity() {
     lateinit var data :List<Tarif>
     lateinit var data3 :MutableList<Tarif>
     lateinit var data2 :List<String>
+    lateinit var list:ArrayList<String>
+    lateinit var orderList: MutableList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +51,7 @@ class CartActivity : AppCompatActivity() {
         buttonPlaceOrder = findViewById(R.id.buttonPlaceOrder)
 
         val bundle = intent.extras
-        val list = bundle?.getStringArrayList("list")
+        list = bundle?.getStringArrayList("list") as ArrayList<String>
         data3 = mutableListOf()
 
         recyclerViewCartItems = findViewById(R.id.recyclerViewCartItems)
@@ -57,6 +62,15 @@ class CartActivity : AppCompatActivity() {
                 data2 = dbHelper.getProductsForName(list[i].toString())
                 data3.add(Tarif(data2[0], data2[1], data2[2].toInt(),data2[3]))
                 dbHelper.addItemToCart(arrayListOf(data2[0], data2[1], data2[2],data2[3]))
+                val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+                val currentDate = sdf.format(Date())
+                val q = 3
+                //dbHelper.addItemToOrder(arrayListOf(data2[0],data2[2], q.toString(),currentDate.toString()))
+                orderList = mutableListOf()
+                orderList.add(data2[0])
+                orderList.add(data2[1])
+                orderList.add(data2[2])
+                orderList.add(data2[3])
             }
             adapter = CartItemsAdapter(data3)
             recyclerViewCartItems.adapter = adapter
@@ -69,7 +83,6 @@ class CartActivity : AppCompatActivity() {
             if(editTextAddress.text.toString().isNotEmpty() && editTextCustomerName.text.toString().isNotEmpty()) {
                 placeOrder()
                 dbHelper.deleteItemFromCart()
-                list?.clear()
             }else{
                 Toast.makeText(this, "Заполните адрес и имя пользователя", Toast.LENGTH_SHORT).show()
             }
@@ -83,9 +96,13 @@ class CartActivity : AppCompatActivity() {
 
     private fun placeOrder() {
         Toast.makeText(this, "Ваш заказ принят", Toast.LENGTH_SHORT).show()
-        intent.putStringArrayListExtra("list", ArrayList<String>(data2))
+        intent.putStringArrayListExtra("list", ArrayList(orderList) )
         val intent = Intent(this, CheckOrdersActivity::class.java)
         startActivity(intent)
+    }
+
+    fun getCurrentDateTime(): Date {
+        return Calendar.getInstance().time
     }
 }
 
