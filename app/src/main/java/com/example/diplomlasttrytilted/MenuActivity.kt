@@ -34,7 +34,7 @@ class MenuActivity : AppCompatActivity() {
     }
 
     fun createOrderButtonClick(view: View) {
-        val intent = Intent(this, CartActivity::class.java)
+        val intent = Intent(this, CheckOrdersActivity::class.java)
         startActivity(intent)
     }
 

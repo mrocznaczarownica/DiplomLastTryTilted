@@ -239,7 +239,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return stdList
     }
 
-    fun getProductsForName(name:String): List<Tarif> {
+    fun getProductsForName(name:String): List<String> {
         /*val db1 = this.writableDatabase
         val tarifTable = "CREATE TABLE $TABLE_TARIFS " +
                 "($COLUMN_NAME_TARIF TEXT, " +
@@ -260,7 +260,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 //                "('Гроб из красного дерева', 'Описания нет', 15000, 'image')"
         db2?.execSQL(tarifTable1)
 */
-        val stdList: ArrayList<Tarif> = ArrayList()
+        val stdList: ArrayList<String> = arrayListOf()
         var std:Tarif
 
         val query = "SELECT * FROM $TABLE_TARIFS where $COLUMN_NAME_TARIF = '$name'"
@@ -272,7 +272,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             //cursor = db.rawQuery(query,null)
             cursor = db.query(TABLE_TARIFS,
                 arrayOf(COLUMN_NAME_TARIF, COLUMN_DESCTIPTION, COLUMN_PRICE, COLUMN_IMAGE),
-                "COLUMN_NAME_TARIF = ?", arrayOf(name),
+                "$COLUMN_NAME_TARIF = ?", arrayOf(name),
                 null, null, null, null)
         }
         catch (e:Exception)
@@ -281,6 +281,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             Log.e("text", e.message.toString())
             return ArrayList()
         }
+        //cursor = db.rawQuery(query,null)
         var name:String
         var desctiption: String
         var price: Int
@@ -293,7 +294,10 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                     price = cursor.getInt(2)
                     image = cursor.getString(3)
                     //std = Tarif(name = name, desctiption = desctiption, price = price, image = image)
-                    stdList.add(Tarif(name, desctiption, price, image))
+                    stdList.add(name)
+                    stdList.add(desctiption)
+                    stdList.add(price.toString())
+                    stdList.add(image)
                     //stdList.add(Tarif(name = name, desctiption = desctiption, price = price, image = image))
                 } while (cursor.moveToNext())
             }

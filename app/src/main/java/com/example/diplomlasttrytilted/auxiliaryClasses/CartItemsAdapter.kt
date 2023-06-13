@@ -1,5 +1,6 @@
 package com.example.diplomlasttrytilted.auxiliaryClasses
 
+import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.diplomlasttrytilted.R
 import com.example.diplomlasttrytilted.dataBase.Cart
 import com.example.diplomlasttrytilted.dataBase.Tarif
+import kotlin.properties.Delegates
 import com.example.diplomlasttrytilted.userActivities.CartActivity as CartActivity1
 
 class CartItemsAdapter(private val products: List<Tarif>): RecyclerView.Adapter<CartItemsAdapter.ViewHolder>() {
+
+    var sum = 0
+
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val name: TextView = itemView.findViewById(R.id.item_name)
         val price: TextView = itemView.findViewById(R.id.item_price)
@@ -45,6 +50,7 @@ class CartItemsAdapter(private val products: List<Tarif>): RecyclerView.Adapter<
                 qua += 1
                 holder.quantity.text = qua.toString()
                 var b = product.price.toString().toInt() * qua
+                sum += b.toString().toInt()
                 holder.error.text = ""
                 holder.total.text = "Сумма: $b"
             }
@@ -59,12 +65,14 @@ class CartItemsAdapter(private val products: List<Tarif>): RecyclerView.Adapter<
                 holder.quantity.text = qua.toString()
                 holder.error.text = ""
                 var b = product.price.toString().toInt() * qua
+                sum -= b.toString().toInt()
                 holder.total.text = "Сумма: $b"
             }
             else{
                 holder.error.text = "Количество товара не может быть меньше нуля"
             }
         }
+
     }
 
     override fun getItemCount(): Int {

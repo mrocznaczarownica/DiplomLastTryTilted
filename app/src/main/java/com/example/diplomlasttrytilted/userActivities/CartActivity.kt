@@ -1,11 +1,13 @@
 package com.example.diplomlasttrytilted.userActivities
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.diplom.auxiliaryСlasses.CartItem
@@ -17,10 +19,10 @@ import com.example.diplomlasttrytilted.dataBase.Tarif
 class CartActivity : AppCompatActivity() {
 
     private lateinit var recyclerViewCartItems: RecyclerView
-    private lateinit var adapter: CartItemsAdapter
     var quantity: Int = 1
 
     private lateinit var textViewTotalPrice: TextView
+    private lateinit var adapter: CartItemsAdapter
     private lateinit var editTextCustomerName: EditText
     private lateinit var editTextAddress: EditText
     private lateinit var buttonPlaceOrder: Button
@@ -28,7 +30,7 @@ class CartActivity : AppCompatActivity() {
     private lateinit var cartItems: List<CartItem>
     private lateinit var dbHelper: DBHelper
     lateinit var data :List<Tarif>
-    lateinit var data3 :List<Tarif>
+    lateinit var data3 :MutableList<Tarif>
     lateinit var data2 :List<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,27 +47,23 @@ class CartActivity : AppCompatActivity() {
 
         val bundle = intent.extras
         val list = bundle?.getStringArrayList("list")
+        data3 = mutableListOf()
 
         recyclerViewCartItems = findViewById(R.id.recyclerViewCartItems)
         recyclerViewCartItems.layoutManager = LinearLayoutManager(this)
 
         if (list != null) {
-            for (item in list) {
-                //TODO:"1)написать в хелпере функцию для получения данных о товарах по имени в формате MutableList<Tarif> и кинуть этот лист в адаптер
-                // "2) нужно продумать момент перехода в корзину не через каталог а из главного меню"
-                data = dbHelper.getProductsForName(item.toString())
-                data2 = arrayListOf("Гроб из красного дерева", "Описания нет", "15000", "image")
-                data3 = arrayListOf(Tarif("Гроб из красного дерева", "Описания нет", 15000, "image"))
-                dbHelper.addItemToCart(data2)
+            for ( i in 0 until list.size) {
+                data2 = dbHelper.getProductsForName(list[i].toString())
+                data3.add(Tarif(data2[0], data2[1], data2[2].toInt(),data2[3]))
+                dbHelper.addItemToCart(arrayListOf(data2[0], data2[1], data2[2],data2[3]))
             }
             adapter = CartItemsAdapter(data3)
             recyclerViewCartItems.adapter = adapter
-
         } else {
             Toast.makeText(this, "Нет элементов в корзине", Toast.LENGTH_SHORT).show()
         }
-
-        textViewTotalPrice.text = getString(R.string.total_price)
+        textViewTotalPrice.text = adapter.sum.toString()
 
         buttonPlaceOrder.setOnClickListener {
             if(editTextAddress.text.toString().isNotEmpty() && editTextCustomerName.text.toString().isNotEmpty()) {
@@ -84,8 +82,10 @@ class CartActivity : AppCompatActivity() {
     }
 
     private fun placeOrder() {
-        Toast.makeText(this, "Ваш заказ на сумму принят", Toast.LENGTH_SHORT).show()
-        finish()
+        Toast.makeText(this, "Ваш заказ принят", Toast.LENGTH_SHORT).show()
+        intent.putStringArrayListExtra("list", ArrayList<String>(data2))
+        val intent = Intent(this, CheckOrdersActivity::class.java)
+        startActivity(intent)
     }
 }
 

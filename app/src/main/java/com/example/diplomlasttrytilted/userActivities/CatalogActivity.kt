@@ -54,7 +54,7 @@ class CatalogActivity : AppCompatActivity() {
         var count = recyclerView.childCount
         var list = mutableListOf<String>()
 
-        for (i in 0 until count) {
+        for ( i in 0 until count) {
             var vh = recyclerView.getChildAt(i)
             val a = vh.findViewById<CheckBox>(R.id.check)
             var name = vh.findViewById<TextView>(R.id.productName)
